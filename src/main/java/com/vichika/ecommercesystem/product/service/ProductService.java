@@ -8,4 +8,6 @@ public interface ProductService {
     PageResponse<ProductResponse> getAllProduct(Byte id, String name, String code, Integer categoryId, String sortBy, String sortAs, Integer page, Integer size);
 
     ProductResponse createProduct(ProductRequest request);
+
+    ProductResponse getProductById(Long id);
 }

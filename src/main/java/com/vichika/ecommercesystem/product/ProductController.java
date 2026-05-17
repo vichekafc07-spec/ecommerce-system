@@ -28,6 +28,11 @@ public class ProductController {
         return ResponseEntity.ok(APIResponse.ok(productService.getAllProduct(id,name,code,categoryId,sortBy,sortAs,page,size)));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<APIResponse<ProductResponse>> getById(@PathVariable Long id){
+        return ResponseEntity.ok(APIResponse.ok(productService.getProductById(id)));
+    }
+
     @PostMapping
     public ResponseEntity<APIResponse<ProductResponse>> create(@Valid @RequestBody ProductRequest request){
         return ResponseEntity.ok(APIResponse.create(productService.createProduct(request)));

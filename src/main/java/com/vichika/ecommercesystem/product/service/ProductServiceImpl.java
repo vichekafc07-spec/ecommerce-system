@@ -44,6 +44,11 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
+    public ProductResponse getProductById(Long id) {
+        return productMapper.toResponse(getById(id));
+    }
+
+    @Override
     public ProductResponse createProduct(ProductRequest request) {
         if (productRepository.existsByNameIgnoreCase(request.name())){
             throw new DuplicateResourceException("Product with name " + request.name() + " already exists");
@@ -61,6 +66,11 @@ public class ProductServiceImpl implements ProductService{
 
     private Category getCategoryById(Byte id){
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id "+ id));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + id));
+    }
+
+    private Product getById(Long id){
+        return productRepository.findProductId(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
     }
 }
