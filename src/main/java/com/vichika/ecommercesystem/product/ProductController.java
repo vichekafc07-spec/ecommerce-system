@@ -2,14 +2,13 @@ package com.vichika.ecommercesystem.product;
 
 import com.vichika.ecommercesystem.common.APIResponse;
 import com.vichika.ecommercesystem.common.PageResponse;
+import com.vichika.ecommercesystem.product.dto.ProductRequest;
 import com.vichika.ecommercesystem.product.dto.ProductResponse;
 import com.vichika.ecommercesystem.product.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -27,6 +26,11 @@ public class ProductController {
                                                                             @RequestParam(required = false,defaultValue = "1") Integer page,
                                                                             @RequestParam(required = false,defaultValue = "5") Integer size){
         return ResponseEntity.ok(APIResponse.ok(productService.getAllProduct(id,name,code,categoryId,sortBy,sortAs,page,size)));
+    }
+
+    @PostMapping
+    public ResponseEntity<APIResponse<ProductResponse>> create(@Valid @RequestBody ProductRequest request){
+        return ResponseEntity.ok(APIResponse.create(productService.createProduct(request)));
     }
 
 }

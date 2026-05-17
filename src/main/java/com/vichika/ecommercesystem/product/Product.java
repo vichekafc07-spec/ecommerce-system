@@ -36,4 +36,11 @@ public class Product {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
     private Category category;
+
+    public BigDecimal totalPrice(){
+        var p = new Product();
+        return p.getPrice()
+                .multiply(BigDecimal.ONE.subtract(p.getDiscount().divide(BigDecimal.valueOf(100))));
+    }
+
 }

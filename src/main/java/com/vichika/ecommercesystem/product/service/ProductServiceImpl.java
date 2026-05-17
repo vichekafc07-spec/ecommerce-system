@@ -1,10 +1,14 @@
 package com.vichika.ecommercesystem.product.service;
 
+import com.vichika.ecommercesystem.category.Category;
 import com.vichika.ecommercesystem.common.PageResponse;
 import com.vichika.ecommercesystem.common.SortResponse;
+import com.vichika.ecommercesystem.exceptions.DuplicateResourceException;
+import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
 import com.vichika.ecommercesystem.product.Product;
 import com.vichika.ecommercesystem.product.ProductMapper;
 import com.vichika.ecommercesystem.product.ProductRepository;
+import com.vichika.ecommercesystem.product.dto.ProductRequest;
 import com.vichika.ecommercesystem.product.dto.ProductResponse;
 import com.vichika.ecommercesystem.spec.SpecificationBuilder;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +39,25 @@ public class ProductServiceImpl implements ProductService{
         Pageable pageable = PageRequest.of(page -1 , size,sort);
         Page<Product> productPage = productRepository.findAll(spec,pageable);
         return PageResponse.from(productPage,productMapper::toResponse);
+    }
+
+    @Override
+    public ProductResponse createProduct(ProductRequest request) {
+        if (productRepository.existsByNameIgnoreCase(request.name())){
+            throw new DuplicateResourceException("Product with name " + request.name() + " already exists");
+        }
+        if (productRepository.existsByCode(request.code())){
+            throw new DuplicateResourceException(" Product with code " + request.code() + " already exists");
+        }
+        var c = getCategoryById(request.categoryId());
+        var p = productMapper.toEntity(request);
+        p.setCategory(c);
+        p.setTotalPrice(p.totalPrice());
+
+        return productMapper.toResponse(productRepository.save(p));
+    }
+
+    private Category getCategoryById(Byte id){
+        throw new ResourceNotFoundException("Category not found with id "+ id);
     }
 }
