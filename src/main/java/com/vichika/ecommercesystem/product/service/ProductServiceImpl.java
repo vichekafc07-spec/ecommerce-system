@@ -1,6 +1,7 @@
 package com.vichika.ecommercesystem.product.service;
 
 import com.vichika.ecommercesystem.category.Category;
+import com.vichika.ecommercesystem.category.CategoryRepository;
 import com.vichika.ecommercesystem.common.PageResponse;
 import com.vichika.ecommercesystem.common.SortResponse;
 import com.vichika.ecommercesystem.exceptions.DuplicateResourceException;
@@ -24,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
 
     @Override
@@ -58,6 +60,7 @@ public class ProductServiceImpl implements ProductService{
     }
 
     private Category getCategoryById(Byte id){
-        throw new ResourceNotFoundException("Category not found with id "+ id);
+        return categoryRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id "+ id));
     }
 }

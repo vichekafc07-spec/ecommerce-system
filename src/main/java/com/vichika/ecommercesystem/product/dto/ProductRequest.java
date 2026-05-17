@@ -31,11 +31,6 @@ public record ProductRequest(
 
         @DecimalMin(value = "0.0", message = "Discount cannot be negative")
         @Digits(integer = 10, fraction = 2, message = "Invalid discount format")
-        BigDecimal discount,
-
-        @NotNull(message = "Total price is required")
-        @DecimalMin(value = "0.0", message = "Total price cannot be negative")
-        @Digits(integer = 10, fraction = 2, message = "Invalid total price format")
-        BigDecimal totalPrice
+        BigDecimal discount
 ) {
 }

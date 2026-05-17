@@ -39,6 +39,8 @@ public class Product {
 
     public BigDecimal totalPrice(){
         var p = new Product();
+        p.setDiscount(discount);
+        p.setPrice(price);
         return p.getPrice()
                 .multiply(BigDecimal.ONE.subtract(p.getDiscount().divide(BigDecimal.valueOf(100))));
     }
