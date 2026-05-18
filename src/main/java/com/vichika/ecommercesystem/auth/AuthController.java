@@ -3,13 +3,11 @@ package com.vichika.ecommercesystem.auth;
 import com.vichika.ecommercesystem.auth.dto.request.UserRequest;
 import com.vichika.ecommercesystem.auth.dto.response.UserResponse;
 import com.vichika.ecommercesystem.common.APIResponse;
+import com.vichika.ecommercesystem.common.PageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -20,6 +18,18 @@ public class AuthController {
     @PostMapping("/users")
     public ResponseEntity<APIResponse<UserResponse>> create(@Valid @RequestBody UserRequest request){
         return ResponseEntity.ok(APIResponse.create(authService.createUser(request)));
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<APIResponse<PageResponse<UserResponse>>> getAll(@RequestParam(required = false) Long id,
+                                                                          @RequestParam(required = false) String username,
+                                                                          @RequestParam(required = false) String email,
+                                                                          @RequestParam(required = false) String sortBy,
+                                                                          @RequestParam(required = false) String sortAs,
+                                                                          @RequestParam(required = false, defaultValue = "1") Integer page,
+                                                                          @RequestParam(required = false, defaultValue = "5") Integer size
+                                                                          ){
+        return ResponseEntity.ok(APIResponse.ok(authService.getAllUser(id,username,email,sortBy,sortAs,page,size)));
     }
 
 }
