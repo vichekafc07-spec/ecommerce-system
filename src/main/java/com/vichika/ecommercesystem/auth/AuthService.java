@@ -1,10 +1,12 @@
 package com.vichika.ecommercesystem.auth;
 
+import com.vichika.ecommercesystem.auth.dto.request.UserChangePassword;
 import com.vichika.ecommercesystem.auth.dto.request.UserRequest;
 import com.vichika.ecommercesystem.auth.dto.request.UserUpdateRequest;
 import com.vichika.ecommercesystem.auth.dto.response.UserResponse;
 import com.vichika.ecommercesystem.common.PageResponse;
 import com.vichika.ecommercesystem.common.SortResponse;
+import com.vichika.ecommercesystem.exceptions.BadRequestException;
 import com.vichika.ecommercesystem.exceptions.DuplicateResourceException;
 import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
 import com.vichika.ecommercesystem.spec.SpecificationBuilder;
@@ -22,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuthService {
     private final UserRepository userRepository;
-    private final PasswordEncoder encoder;
+    private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
 
     public UserResponse createUser(UserRequest request) {
@@ -30,7 +32,7 @@ public class AuthService {
             throw new DuplicateResourceException("User with email " + request.email() + " already exists");
         }
         var u = userMapper.toEntity(request);
-        u.setPassword(encoder.encode(request.password()));
+        u.setPassword(passwordEncoder.encode(request.password()));
         return userMapper.toResponse(userRepository.save(u));
     }
 
@@ -58,6 +60,16 @@ public class AuthService {
         u.setEmail(request.email());
 
         return userMapper.toResponse(userRepository.save(u));
+    }
+
+    public String changePassword(Long id, UserChangePassword request) {
+        var u = getUserById(id);
+        if (!passwordEncoder.matches(request.oldPassword(), u.getPassword())){
+            throw new BadRequestException("Old Password not found");
+        }
+        u.setPassword(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(u);
+        return "Password changed successfully";
     }
 
     private AppUser getUserById(Long id){
