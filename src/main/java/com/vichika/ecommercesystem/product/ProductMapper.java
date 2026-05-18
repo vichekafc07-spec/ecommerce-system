@@ -14,5 +14,5 @@ public interface ProductMapper {
     @Mapping(source = "category.name", target = "categoryName")
     ProductResponse toResponse(Product product);
 
-    void toUpdate(Product product, @MappingTarget ProductRequest request);
+    void toUpdate(ProductRequest request, @MappingTarget Product product);
 }

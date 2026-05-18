@@ -64,6 +64,23 @@ public class ProductServiceImpl implements ProductService{
         return productMapper.toResponse(productRepository.save(p));
     }
 
+    @Override
+    public ProductResponse updateProduct(Long id, ProductRequest request) {
+        var p = getById(id);
+        var c = getCategoryById(request.categoryId());
+        productMapper.toUpdate(request,p);
+        p.setCategory(c);
+        p.setTotalPrice(p.totalPrice());
+
+        return productMapper.toResponse(productRepository.save(p));
+    }
+
+    @Override
+    public void deleteProduct(Long id) {
+        var p = getById(id);
+        productRepository.delete(p);
+    }
+
     private Category getCategoryById(Byte id){
         return categoryRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + id));
