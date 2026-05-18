@@ -1,6 +1,7 @@
 package com.vichika.ecommercesystem.auth;
 
 import com.vichika.ecommercesystem.auth.dto.request.UserRequest;
+import com.vichika.ecommercesystem.auth.dto.response.UserResponse;
 import com.vichika.ecommercesystem.common.APIResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/users")
-    public ResponseEntity<APIResponse<UserRequest>> create(@Valid @RequestBody UserRequest request){
+    public ResponseEntity<APIResponse<UserResponse>> create(@Valid @RequestBody UserRequest request){
         return ResponseEntity.ok(APIResponse.create(authService.createUser(request)));
     }
 
