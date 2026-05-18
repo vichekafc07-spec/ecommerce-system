@@ -1,6 +1,7 @@
 package com.vichika.ecommercesystem.auth;
 
 import com.vichika.ecommercesystem.auth.dto.request.UserRequest;
+import com.vichika.ecommercesystem.auth.dto.request.UserUpdateRequest;
 import com.vichika.ecommercesystem.auth.dto.response.UserResponse;
 import com.vichika.ecommercesystem.common.APIResponse;
 import com.vichika.ecommercesystem.common.PageResponse;
@@ -30,6 +31,12 @@ public class AuthController {
                                                                           @RequestParam(required = false, defaultValue = "5") Integer size
                                                                           ){
         return ResponseEntity.ok(APIResponse.ok(authService.getAllUser(id,username,email,sortBy,sortAs,page,size)));
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<APIResponse<UserResponse>> update(@PathVariable Long id,
+                                                            @Valid @RequestBody UserUpdateRequest request){
+        return ResponseEntity.ok(APIResponse.ok(authService.updateUser(id,request)));
     }
 
 }
