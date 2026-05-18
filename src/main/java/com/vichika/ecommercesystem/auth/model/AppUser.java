@@ -1,4 +1,4 @@
-package com.vichika.ecommercesystem.auth;
+package com.vichika.ecommercesystem.auth.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

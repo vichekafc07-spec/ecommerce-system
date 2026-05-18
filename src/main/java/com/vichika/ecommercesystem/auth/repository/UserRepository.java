@@ -1,5 +1,6 @@
-package com.vichika.ecommercesystem.auth;
+package com.vichika.ecommercesystem.auth.repository;
 
+import com.vichika.ecommercesystem.auth.model.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

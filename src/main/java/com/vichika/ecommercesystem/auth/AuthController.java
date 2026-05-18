@@ -46,4 +46,10 @@ public class AuthController {
         return ResponseEntity.ok(authService.changePassword(id,changePassword));
     }
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id){
+        authService.deleteUser(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

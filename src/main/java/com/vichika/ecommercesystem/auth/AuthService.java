@@ -4,6 +4,8 @@ import com.vichika.ecommercesystem.auth.dto.request.UserChangePassword;
 import com.vichika.ecommercesystem.auth.dto.request.UserRequest;
 import com.vichika.ecommercesystem.auth.dto.request.UserUpdateRequest;
 import com.vichika.ecommercesystem.auth.dto.response.UserResponse;
+import com.vichika.ecommercesystem.auth.model.AppUser;
+import com.vichika.ecommercesystem.auth.repository.UserRepository;
 import com.vichika.ecommercesystem.common.PageResponse;
 import com.vichika.ecommercesystem.common.SortResponse;
 import com.vichika.ecommercesystem.exceptions.BadRequestException;
@@ -70,6 +72,11 @@ public class AuthService {
         u.setPassword(passwordEncoder.encode(request.newPassword()));
         userRepository.save(u);
         return "Password changed successfully";
+    }
+
+    public void deleteUser(Long id) {
+        var u = getUserById(id);
+        userRepository.delete(u);
     }
 
     private AppUser getUserById(Long id){
