@@ -1,4 +1,4 @@
-package com.vichika.ecommercesystem.admin.dto;
+package com.vichika.ecommercesystem.admin.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
