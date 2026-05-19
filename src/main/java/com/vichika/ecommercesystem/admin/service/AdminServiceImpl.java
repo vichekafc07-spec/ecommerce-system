@@ -1,5 +1,7 @@
 package com.vichika.ecommercesystem.admin.service;
 
+import com.vichika.ecommercesystem.admin.dto.RoleRequest;
+import com.vichika.ecommercesystem.admin.dto.RoleResponse;
 import com.vichika.ecommercesystem.auth.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,5 +14,6 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public RoleResponse createRole(RoleRequest request) {
 
+        return null;
     }
 }
