@@ -26,7 +26,7 @@ public class AuthService {
         );
         var user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        var accessToken = jwtService.generateToken(user.getEmail());
+        var accessToken = jwtService.generateAccessToken(user);
         return new JwtResponse(accessToken);
     }
 }
