@@ -1,5 +1,6 @@
-package com.vichika.ecommercesystem.auth;
+package com.vichika.ecommercesystem.auth.controller;
 
+import com.vichika.ecommercesystem.auth.service.UserService;
 import com.vichika.ecommercesystem.auth.dto.request.UserChangePassword;
 import com.vichika.ecommercesystem.auth.dto.request.UserRequest;
 import com.vichika.ecommercesystem.auth.dto.request.UserUpdateRequest;
@@ -12,12 +13,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class AuthController {
-    private final AuthService authService;
+public class UserController {
+    private final UserService authService;
 
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity<APIResponse<PageResponse<UserResponse>>> getAll(@RequestParam(required = false) Long id,
                                                                           @RequestParam(required = false) String username,
                                                                           @RequestParam(required = false) String email,
@@ -29,24 +30,24 @@ public class AuthController {
         return ResponseEntity.ok(APIResponse.ok(authService.getAllUser(id,username,email,sortBy,sortAs,page,size)));
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public ResponseEntity<APIResponse<UserResponse>> create(@Valid @RequestBody UserRequest request){
         return ResponseEntity.ok(APIResponse.create(authService.createUser(request)));
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<APIResponse<UserResponse>> update(@PathVariable Long id,
                                                             @Valid @RequestBody UserUpdateRequest request){
         return ResponseEntity.ok(APIResponse.ok(authService.updateUser(id,request)));
     }
 
-    @PutMapping("/users/change-password/{id}")
+    @PutMapping("/change-password/{id}")
     public ResponseEntity<?> changePassword(@PathVariable Long id,
                                             @Valid @RequestBody UserChangePassword changePassword){
         return ResponseEntity.ok(authService.changePassword(id,changePassword));
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id){
         authService.deleteUser(id);
         return ResponseEntity.noContent().build();

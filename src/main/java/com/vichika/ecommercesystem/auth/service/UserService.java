@@ -1,5 +1,6 @@
-package com.vichika.ecommercesystem.auth;
+package com.vichika.ecommercesystem.auth.service;
 
+import com.vichika.ecommercesystem.auth.UserMapper;
 import com.vichika.ecommercesystem.auth.dto.request.UserChangePassword;
 import com.vichika.ecommercesystem.auth.dto.request.UserRequest;
 import com.vichika.ecommercesystem.auth.dto.request.UserUpdateRequest;
@@ -24,7 +25,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
