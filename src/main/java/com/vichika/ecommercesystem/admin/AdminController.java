@@ -1,5 +1,6 @@
 package com.vichika.ecommercesystem.admin;
 
+import com.vichika.ecommercesystem.admin.dto.request.PermissionRequest;
 import com.vichika.ecommercesystem.admin.dto.request.RoleRequest;
 import com.vichika.ecommercesystem.admin.dto.response.PermissionResponse;
 import com.vichika.ecommercesystem.admin.dto.response.RoleResponse;
@@ -45,11 +46,16 @@ public class AdminController {
 
     // Permission Feature
     @GetMapping("/permissions")
-    public ResponseEntity<APIResponse<PermissionResponse>> getAllPermission(@RequestParam(required = false) String sortBy,
-                                                                            @RequestParam(required = false) String sortAs,
-                                                                            @RequestParam(required = false,defaultValue = "1") Integer page,
-                                                                            @RequestParam(required = false,defaultValue = "5") Integer size){
+    public ResponseEntity<APIResponse<PageResponse<PermissionResponse>>> getAllPermission(@RequestParam(required = false) String sortBy,
+                                                                                          @RequestParam(required = false) String sortAs,
+                                                                                          @RequestParam(required = false,defaultValue = "1") Integer page,
+                                                                                          @RequestParam(required = false,defaultValue = "5") Integer size){
         return ResponseEntity.ok(APIResponse.ok(adminService.getAllPermissions(sortBy,sortAs,page,size)));
+    }
+
+    @PostMapping("/permissions")
+    public ResponseEntity<APIResponse<PermissionResponse>> createPermission(@Valid @RequestBody PermissionRequest request){
+        return ResponseEntity.ok(APIResponse.create(adminService.createPermissions(request)));
     }
 
 }

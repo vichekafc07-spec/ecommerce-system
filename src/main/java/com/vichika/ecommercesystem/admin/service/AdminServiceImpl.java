@@ -73,8 +73,20 @@ public class AdminServiceImpl implements AdminService {
         return null;
     }
 
+    @Override
+    public PermissionResponse updatePermission(Integer id, PermissionRequest request) {
+        var p = getPermissionById(id);
+        p.setName(request.name());
+        return adminMapper.permissionResponse(permissionRepository.save(p));
+    }
+
     private Role getRoleById(Integer id){
         return roleRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Role not found with id " + id));
+    }
+
+    private Permission getPermissionById(Integer id){
+        return permissionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Permission not found with id " + id));
     }
 }
