@@ -1,10 +1,13 @@
 package com.vichika.ecommercesystem.admin.service;
 
 import com.vichika.ecommercesystem.admin.AdminMapper;
+import com.vichika.ecommercesystem.admin.dto.request.PermissionRequest;
 import com.vichika.ecommercesystem.admin.dto.request.RoleRequest;
 import com.vichika.ecommercesystem.admin.dto.response.PermissionResponse;
 import com.vichika.ecommercesystem.admin.dto.response.RoleResponse;
+import com.vichika.ecommercesystem.auth.model.Permission;
 import com.vichika.ecommercesystem.auth.model.Role;
+import com.vichika.ecommercesystem.auth.repository.PermissionRepository;
 import com.vichika.ecommercesystem.auth.repository.RoleRepository;
 import com.vichika.ecommercesystem.common.PageResponse;
 import com.vichika.ecommercesystem.common.SortResponse;
@@ -23,6 +26,8 @@ import java.util.List;
 public class AdminServiceImpl implements AdminService {
     private final RoleRepository roleRepository;
     private final AdminMapper adminMapper;
+    private final PermissionRepository permissionRepository;
+
     public static final String ROLE_PREFIX = "ROLE_";
 
     @Override
@@ -68,9 +73,22 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public PermissionResponse getAllPermissions(String sortBy, String sortAs, Integer page, Integer size) {
+    public PageResponse<PermissionResponse> getAllPermissions(String sortBy, String sortAs, Integer page, Integer size) {
+        List<String> allowSort = List.of("id");
+        var sort = SortResponse.sortResponse(sortBy,sortAs,allowSort);
+        Pageable pageable = PageRequest.of(page - 1, size ,sort);
+        Page<Permission> permissionPage = permissionRepository.findAll(pageable);
+        return PageResponse.from(permissionPage, adminMapper::permissionResponse);
+    }
 
-        return null;
+    @Override
+    public PermissionResponse createPermissions(PermissionRequest request) {
+        if (permissionRepository.existsByNameIgnoreCase(request.name())) {
+            throw new DuplicateResourceException("Permission with name " + request.name() + " already exists");
+        }
+        var p = new Permission();
+        p.setName(request.name());
+        return adminMapper.permissionResponse(permissionRepository.save(p));
     }
 
     private Role getRoleById(Integer id){

@@ -1,5 +1,6 @@
 package com.vichika.ecommercesystem.admin.service;
 
+import com.vichika.ecommercesystem.admin.dto.request.PermissionRequest;
 import com.vichika.ecommercesystem.admin.dto.request.RoleRequest;
 import com.vichika.ecommercesystem.admin.dto.response.PermissionResponse;
 import com.vichika.ecommercesystem.admin.dto.response.RoleResponse;
@@ -14,5 +15,7 @@ public interface AdminService {
 
     void deleteProduct(Integer id);
 
-    PermissionResponse getAllPermissions(String sortBy, String sortAs, Integer page, Integer size);
+    PageResponse<PermissionResponse> getAllPermissions(String sortBy, String sortAs, Integer page, Integer size);
+
+    PermissionResponse createPermissions(PermissionRequest request);
 }
