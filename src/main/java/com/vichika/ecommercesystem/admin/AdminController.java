@@ -58,4 +58,10 @@ public class AdminController {
         return ResponseEntity.ok(APIResponse.create(adminService.createPermissions(request)));
     }
 
+    @PutMapping("/permissions/{id}")
+    public ResponseEntity<APIResponse<PermissionResponse>> updatePermission(@PathVariable Integer id,
+                                                                            @Valid @RequestBody PermissionRequest request){
+        return ResponseEntity.ok(APIResponse.ok(adminService.updatePermission(id,request)));
+    }
+
 }
