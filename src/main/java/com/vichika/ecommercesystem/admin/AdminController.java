@@ -40,7 +40,7 @@ public class AdminController {
 
     @DeleteMapping("/roles/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id){
-        adminService.deleteProduct(id);
+        adminService.deleteRole(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -61,7 +61,13 @@ public class AdminController {
     @PutMapping("/permissions/{id}")
     public ResponseEntity<APIResponse<PermissionResponse>> updatePermission(@PathVariable Integer id,
                                                                             @Valid @RequestBody PermissionRequest request){
-        return ResponseEntity.ok(APIResponse.ok(adminService.updatePermission(id,request)));
+        return ResponseEntity.ok(APIResponse.ok(adminService.updatePermissions(id,request)));
+    }
+
+    @DeleteMapping("/roles/{id}")
+    public ResponseEntity<?> deletePermission(@PathVariable Integer id){
+        adminService.deletePermissions(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
