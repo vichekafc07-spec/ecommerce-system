@@ -1,16 +1,15 @@
 package com.vichika.ecommercesystem.admin;
 
-import com.vichika.ecommercesystem.admin.dto.RoleRequest;
-import com.vichika.ecommercesystem.admin.dto.RoleResponse;
+import com.vichika.ecommercesystem.admin.dto.request.RoleRequest;
+import com.vichika.ecommercesystem.admin.dto.response.PermissionResponse;
+import com.vichika.ecommercesystem.admin.dto.response.RoleResponse;
 import com.vichika.ecommercesystem.admin.service.AdminService;
 import com.vichika.ecommercesystem.common.APIResponse;
+import com.vichika.ecommercesystem.common.PageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -18,9 +17,39 @@ import org.springframework.web.bind.annotation.RestController;
 public class AdminController {
     private final AdminService adminService;
 
+    // Role Feature
+    @GetMapping("/roles")
+    public ResponseEntity<APIResponse<PageResponse<RoleResponse>>> getAll(@RequestParam(required = false) String sortBy,
+                                                                          @RequestParam(required = false) String sortAs,
+                                                                          @RequestParam(required = false,defaultValue = "1") Integer page,
+                                                                          @RequestParam(required = false,defaultValue = "5") Integer size){
+        return ResponseEntity.ok(APIResponse.ok(adminService.getAllRole(sortBy,sortAs,page,size)));
+    }
+
     @PostMapping("/roles")
     public ResponseEntity<APIResponse<RoleResponse>> create(@Valid @RequestBody RoleRequest request){
         return ResponseEntity.ok(APIResponse.create(adminService.createRole(request)));
+    }
+
+    @PutMapping("/roles/{id}")
+    public ResponseEntity<APIResponse<RoleResponse>> update(@PathVariable Integer id,
+                                                            @Valid @RequestBody RoleRequest request){
+        return ResponseEntity.ok(APIResponse.ok(adminService.updateRole(id,request)));
+    }
+
+    @DeleteMapping("/roles/{id}")
+    public ResponseEntity<?> delete(@PathVariable Integer id){
+        adminService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    // Permission Feature
+    @GetMapping("/permissions")
+    public ResponseEntity<APIResponse<PermissionResponse>> getAllPermission(@RequestParam(required = false) String sortBy,
+                                                                            @RequestParam(required = false) String sortAs,
+                                                                            @RequestParam(required = false,defaultValue = "1") Integer page,
+                                                                            @RequestParam(required = false,defaultValue = "5") Integer size){
+        return ResponseEntity.ok(APIResponse.ok(adminService.getAllPermissions(sortBy,sortAs,page,size)));
     }
 
 }
