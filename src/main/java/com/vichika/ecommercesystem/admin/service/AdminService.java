@@ -13,11 +13,13 @@ public interface AdminService {
 
     RoleResponse updateRole(Integer id, RoleRequest request);
 
-    void deleteProduct(Integer id);
+    void deleteRole(Integer id);
 
     PageResponse<PermissionResponse> getAllPermissions(String sortBy, String sortAs, Integer page, Integer size);
 
     PermissionResponse createPermissions(PermissionRequest request);
 
-    PermissionResponse updatePermission(Integer id, PermissionRequest request);
+    PermissionResponse updatePermissions(Integer id, PermissionRequest request);
+
+    void deletePermissions(Integer id);
 }
