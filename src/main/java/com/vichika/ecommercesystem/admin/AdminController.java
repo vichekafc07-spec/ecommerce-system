@@ -1,9 +1,13 @@
 package com.vichika.ecommercesystem.admin;
 
 import com.vichika.ecommercesystem.admin.dto.request.PermissionRequest;
+import com.vichika.ecommercesystem.admin.dto.request.RolePermissionRequest;
 import com.vichika.ecommercesystem.admin.dto.request.RoleRequest;
+import com.vichika.ecommercesystem.admin.dto.request.UserRoleRequest;
 import com.vichika.ecommercesystem.admin.dto.response.PermissionResponse;
+import com.vichika.ecommercesystem.admin.dto.response.RolePermissionResponse;
 import com.vichika.ecommercesystem.admin.dto.response.RoleResponse;
+import com.vichika.ecommercesystem.admin.dto.response.UserRoleResponse;
 import com.vichika.ecommercesystem.admin.service.AdminService;
 import com.vichika.ecommercesystem.common.APIResponse;
 import com.vichika.ecommercesystem.common.PageResponse;
@@ -44,6 +48,12 @@ public class AdminController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/roles/user/{userId}")
+    public ResponseEntity<APIResponse<UserRoleResponse>> assignUserRole(@PathVariable Long userId,
+                                                                       @Valid @RequestBody UserRoleRequest request){
+        return ResponseEntity.ok(APIResponse.ok(adminService.assignUserRole(userId,request)));
+    }
+
     // Permission Feature
     @GetMapping("/permissions")
     public ResponseEntity<APIResponse<PageResponse<PermissionResponse>>> getAllPermission(@RequestParam(required = false) String sortBy,
@@ -68,6 +78,12 @@ public class AdminController {
     public ResponseEntity<?> deletePermission(@PathVariable Integer id){
         adminService.deletePermissions(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/permissions/role/{roleId}")
+    public ResponseEntity<APIResponse<RolePermissionResponse>> assignRolePermission(@PathVariable Integer roleId,
+                                                                      @Valid @RequestBody RolePermissionRequest request){
+        return ResponseEntity.ok(APIResponse.ok(adminService.assignRolePermission(roleId,request)));
     }
 
 }
