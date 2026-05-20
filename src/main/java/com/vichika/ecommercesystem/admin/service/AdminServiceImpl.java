@@ -62,7 +62,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void deleteProduct(Integer id) {
+    public void deleteRole(Integer id) {
         var r = getRoleById(id);
         roleRepository.delete(r);
     }
@@ -74,10 +74,16 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public PermissionResponse updatePermission(Integer id, PermissionRequest request) {
+    public PermissionResponse updatePermissions(Integer id, PermissionRequest request) {
         var p = getPermissionById(id);
         p.setName(request.name());
         return adminMapper.permissionResponse(permissionRepository.save(p));
+    }
+
+    @Override
+    public void deletePermissions(Integer id) {
+        var p = getPermissionById(id);
+        permissionRepository.delete(p);
     }
 
     private Role getRoleById(Integer id){

@@ -18,4 +18,6 @@ public interface AdminService {
     PageResponse<PermissionResponse> getAllPermissions(String sortBy, String sortAs, Integer page, Integer size);
 
     PermissionResponse createPermissions(PermissionRequest request);
+
+    PermissionResponse updatePermission(Integer id, PermissionRequest request);
 }
