@@ -1,6 +1,7 @@
 package com.vichika.ecommercesystem.security.jwt;
 
 import com.vichika.ecommercesystem.auth.model.AppUser;
+import com.vichika.ecommercesystem.auth.model.Permission;
 import com.vichika.ecommercesystem.auth.model.Role;
 import com.vichika.ecommercesystem.config.JwtConfig;
 import io.jsonwebtoken.Claims;
@@ -45,7 +46,7 @@ public class JwtService {
     }
 
     public List<String> getPermission(String token){
-        return getClaims(token).get("permission", List.class);
+        return getClaims(token).get("permissions", List.class);
     }
 
     private String generateToken(AppUser user, long tokenExpiration) {
@@ -54,10 +55,18 @@ public class JwtService {
                 .map(Role::getName)
                 .toList();
 
+        List<String> permissions = user.getRoles()
+                .stream()
+                .flatMap(role -> role.getPermissions().stream())
+                .map(Permission::getName)
+                .distinct()
+                .toList();
+
         var claims = Jwts.claims()
                 .subject(user.getUsername())
                 .add("email", user.getEmail())
                 .add("role", roles)
+                .add("permission", permissions)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
                 .build();
