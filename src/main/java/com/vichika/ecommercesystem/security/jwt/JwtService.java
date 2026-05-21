@@ -46,7 +46,7 @@ public class JwtService {
     }
 
     public List<String> getPermission(String token){
-        return getClaims(token).get("permissions", List.class);
+        return getClaims(token).get("permission", List.class);
     }
 
     private String generateToken(AppUser user, long tokenExpiration) {
