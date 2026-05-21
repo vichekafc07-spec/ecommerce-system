@@ -3,6 +3,8 @@ package com.vichika.ecommercesystem.security.jwt;
 import com.vichika.ecommercesystem.auth.model.AppUser;
 import com.vichika.ecommercesystem.auth.model.Role;
 import com.vichika.ecommercesystem.config.JwtConfig;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,4 +39,25 @@ public class JwtService {
                 .signWith(jwtConfig.getKey())
                 .compact();
     }
+
+    public String parseToken(String token){
+        try {
+            var claims = getClaims(token);
+            return Jwts.builder()
+                    .claims(claims)
+                    .signWith(jwtConfig.getKey())
+                    .compact();
+        }catch (JwtException e){
+            return null;
+        }
+    }
+
+    private Claims getClaims(String token){
+        return Jwts.parser()
+                .verifyWith(jwtConfig.getKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
 }
