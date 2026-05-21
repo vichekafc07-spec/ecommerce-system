@@ -49,7 +49,7 @@ public class SecurityConfig {
                         // admin-only routes
                         .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 
-                        // everything else requires auth
+                        // everything else requires authentication
                         .anyRequest().authenticated()
                 )
 
