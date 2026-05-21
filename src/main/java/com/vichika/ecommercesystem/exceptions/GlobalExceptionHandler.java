@@ -4,7 +4,6 @@ import com.vichika.ecommercesystem.common.APIResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestCookieException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.naming.AuthenticationException;
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,10 +76,10 @@ public class GlobalExceptionHandler {
     }
 
     // Handle Spring Security 403 Forbidden
-    @ExceptionHandler(AuthorizationDeniedException.class)
-    public ResponseEntity<APIResponse<?>> handleAuthorizationDeniedException() {
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<APIResponse<?>> handleAccessDeniedException(AccessDeniedException ex){
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(APIResponse.error("Access denied",
+                .body(APIResponse.error(ex.getMessage() != null ? ex.getMessage() : "You do not have permission to access this resource",
                         HttpStatus.FORBIDDEN));
     }
 
