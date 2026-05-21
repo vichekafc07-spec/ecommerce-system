@@ -4,11 +4,18 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
@@ -17,10 +24,39 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain filterChain)
-            throws ServletException, IOException {
+                                    @NonNull HttpServletResponse response,
+                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
         var authHeader = request.getHeader("Authorization");
-    if (authHeader == null || !authHeader.startsWith("Bearer "));
+        if (authHeader == null || !authHeader.startsWith("Bearer ")){
+            filterChain.doFilter(request, response);
+            return;
+        }
+        var token = authHeader.replace("Bearer ","");
+        var jwt = jwtService.parseToken(token);
+        if (jwt == null || jwtService.isExpiration(token)){
+            filterChain.doFilter(request,response);
+            return;
+        }
+
+        var roles = jwtService.getRole(token);
+        var permissions = jwtService.getPermission(token);
+
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+
+        roles.forEach(role ->
+                authorities.add(new SimpleGrantedAuthority(role)));
+
+        permissions.forEach(p ->
+                authorities.add(new SimpleGrantedAuthority(p)));
+
+        var authentication = new UsernamePasswordAuthenticationToken(
+                jwtService.getUsername(token),
+                null,
+                authorities
+        );
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        filterChain.doFilter(request,response);
     }
 }

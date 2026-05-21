@@ -20,7 +20,35 @@ public class JwtService {
         return generateToken(user,jwtConfig.getAccessTokenExp());
     }
 
-    public String generateToken(AppUser user, long tokenExpiration) {
+    public String parseToken(String token){
+        try {
+            var claims = getClaims(token);
+            return Jwts.builder()
+                    .claims(claims)
+                    .signWith(jwtConfig.getKey())
+                    .compact();
+        }catch (JwtException e){
+            return null;
+        }
+    }
+
+    public boolean isExpiration(String token){
+        return getClaims(token).getExpiration().before(new Date());
+    }
+
+    public String getUsername(String token){
+        return getClaims(token).getSubject();
+    }
+
+    public List<String> getRole(String token){
+        return getClaims(token).get("role", List.class);
+    }
+
+    public List<String> getPermission(String token){
+        return getClaims(token).get("permission", List.class);
+    }
+
+    private String generateToken(AppUser user, long tokenExpiration) {
         List<String> roles = user.getRoles()
                 .stream()
                 .map(Role::getName)
@@ -38,18 +66,6 @@ public class JwtService {
                 .claims(claims)
                 .signWith(jwtConfig.getKey())
                 .compact();
-    }
-
-    public String parseToken(String token){
-        try {
-            var claims = getClaims(token);
-            return Jwts.builder()
-                    .claims(claims)
-                    .signWith(jwtConfig.getKey())
-                    .compact();
-        }catch (JwtException e){
-            return null;
-        }
     }
 
     private Claims getClaims(String token){
