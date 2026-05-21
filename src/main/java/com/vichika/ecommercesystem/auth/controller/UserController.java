@@ -10,6 +10,7 @@ import com.vichika.ecommercesystem.common.PageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -31,6 +32,7 @@ public class UserController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<APIResponse<UserResponse>> create(@Valid @RequestBody UserRequest request){
         return ResponseEntity.ok(APIResponse.create(authService.createUser(request)));
     }
