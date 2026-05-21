@@ -6,6 +6,7 @@ import com.vichika.ecommercesystem.common.PageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,13 +16,14 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<PageResponse<CategoryResponse>>> getAll(@RequestParam(required = false) Byte id,
-                                                                             @RequestParam(required = false) String name,
-                                                                             @RequestParam(required = false) String code,
-                                                                             @RequestParam(required = false) String sortBy,
-                                                                             @RequestParam(required = false) String sortAs,
-                                                                             @RequestParam(required = false,defaultValue = "1") Integer page,
-                                                                             @RequestParam(required = false,defaultValue = "5") Integer size){
+                                                                              @RequestParam(required = false) String name,
+                                                                              @RequestParam(required = false) String code,
+                                                                              @RequestParam(required = false) String sortBy,
+                                                                              @RequestParam(required = false) String sortAs,
+                                                                              @RequestParam(required = false,defaultValue = "1") Integer page,
+                                                                              @RequestParam(required = false,defaultValue = "5") Integer size){
         return ResponseEntity.ok(APIResponse.ok(categoryService.getAllCategory(id,name,code,sortBy,sortAs,page,size)));
     }
 
