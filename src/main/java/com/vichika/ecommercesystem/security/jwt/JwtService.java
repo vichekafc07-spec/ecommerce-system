@@ -9,47 +9,38 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.Date;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class JwtService {
+
     private final JwtConfig jwtConfig;
 
-    public String generateAccessToken(AppUser user){
-        return generateToken(user,jwtConfig.getAccessTokenExp());
+    public String generateAccessToken(AppUser user) {
+        return generateToken(user, jwtConfig.getAccessTokenExp());
     }
 
-    public String parseToken(String token){
-        try {
-            var claims = getClaims(token);
-            return Jwts.builder()
-                    .claims(claims)
-                    .signWith(jwtConfig.getKey())
-                    .compact();
-        }catch (JwtException e){
-            return null;
-        }
-    }
-
-    public boolean isExpiration(String token){
+    public boolean isExpiration(String token) {
         return getClaims(token).getExpiration().before(new Date());
     }
 
-    public String getUsername(String token){
+    public String getUsername(String token) {
         return getClaims(token).getSubject();
     }
 
-    public List<String> getRole(String token){
+    public List<String> getRole(String token) {
         return getClaims(token).get("role", List.class);
     }
 
-    public List<String> getPermission(String token){
+    public List<String> getPermission(String token) {
         return getClaims(token).get("permission", List.class);
     }
 
     private String generateToken(AppUser user, long tokenExpiration) {
+
         List<String> roles = user.getRoles()
                 .stream()
                 .map(Role::getName)
@@ -77,12 +68,11 @@ public class JwtService {
                 .compact();
     }
 
-    private Claims getClaims(String token){
+    private Claims getClaims(String token) {
         return Jwts.parser()
                 .verifyWith(jwtConfig.getKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
     }
-
 }

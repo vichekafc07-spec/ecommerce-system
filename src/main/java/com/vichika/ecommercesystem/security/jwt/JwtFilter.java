@@ -20,21 +20,29 @@ import java.util.Set;
 @Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
+
     private final JwtService jwtService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    @NonNull HttpServletResponse response,
-                                    @NonNull FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            FilterChain filterChain
+    ) throws ServletException, IOException {
+
         var authHeader = request.getHeader("Authorization");
-        if (authHeader == null || !authHeader.startsWith("Bearer ")){
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
         }
-        var token = authHeader.replace("Bearer ","");
+
+        var token = authHeader.replace("Bearer ", "");
+
         var jwt = jwtService.parseToken(token);
-        if (jwt == null || jwtService.isExpiration(token)){
-            filterChain.doFilter(request,response);
+
+        if (jwt == null || jwtService.isExpiration(token)) {
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -44,19 +52,25 @@ public class JwtFilter extends OncePerRequestFilter {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
         roles.forEach(role ->
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + role)));
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + role))
+        );
 
         permissions.forEach(p ->
-                authorities.add(new SimpleGrantedAuthority(p)));
+                authorities.add(new SimpleGrantedAuthority(p))
+        );
 
         var authentication = new UsernamePasswordAuthenticationToken(
                 jwtService.getUsername(token),
                 null,
                 authorities
         );
-        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+        authentication.setDetails(
+                new WebAuthenticationDetailsSource().buildDetails(request)
+        );
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }
