@@ -50,7 +50,7 @@ public class AdminController {
 
     @PutMapping("/roles/user/{userId}")
     public ResponseEntity<APIResponse<UserRoleResponse>> assignUserRole(@PathVariable Long userId,
-                                                                       @Valid @RequestBody UserRoleRequest request){
+                                                                        @Valid @RequestBody UserRoleRequest request){
         return ResponseEntity.ok(APIResponse.ok(adminService.assignUserRole(userId,request)));
     }
 
@@ -82,7 +82,7 @@ public class AdminController {
 
     @PutMapping("/permissions/role/{roleId}")
     public ResponseEntity<APIResponse<RolePermissionResponse>> assignRolePermission(@PathVariable Integer roleId,
-                                                                      @Valid @RequestBody RolePermissionRequest request){
+                                                                                    @Valid @RequestBody RolePermissionRequest request){
         return ResponseEntity.ok(APIResponse.ok(adminService.assignRolePermission(roleId,request)));
     }
 
