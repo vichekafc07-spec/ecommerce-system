@@ -32,7 +32,7 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('admin:read')")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<UserResponse>> create(@Valid @RequestBody UserRequest request){
         return ResponseEntity.ok(APIResponse.create(authService.createUser(request)));
     }
