@@ -10,6 +10,8 @@ import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.naming.AuthenticationException;
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,9 +29,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException ex) {
         // get errors key
         Map<String,String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach((item)->{
-            errors.put(item.getField(),item.getDefaultMessage());
-        });
+        ex.getBindingResult().getFieldErrors().forEach((item)-> errors.put(item.getField(),item.getDefaultMessage()));
         Map<String,Object> res = new HashMap<>();
         res.put("success",false);
         res.put("code",HttpStatus.BAD_REQUEST.value()); // 400
@@ -67,21 +67,21 @@ public class GlobalExceptionHandler {
                 .body(APIResponse.error("Something Wrong!", HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
-//    // Handle Spring Security 401 Unauthorized
-//    @ExceptionHandler(AuthenticationException.class)
-//    public ResponseEntity<APIResponse<?>> handleAuthenticationException(AuthenticationException ex){
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-//                .body(APIResponse.error(ex.getMessage() != null ? ex.getMessage() : "Authentication required",
-//                        HttpStatus.UNAUTHORIZED));
-//    }
-//
-//    // Handle Spring Security 403 Forbidden
-//    @ExceptionHandler(AccessDeniedException.class)
-//    public ResponseEntity<APIResponse<?>> handleAccessDeniedException(AccessDeniedException ex){
-//        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-//                .body(APIResponse.error(ex.getMessage() != null ? ex.getMessage() : "You do not have permission to access this resource",
-//                        HttpStatus.FORBIDDEN));
-//    }
+    // Handle Spring Security 401 Unauthorized
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<APIResponse<?>> handleAuthenticationException(AuthenticationException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(APIResponse.error(ex.getMessage() != null ? ex.getMessage() : "Authentication required",
+                        HttpStatus.UNAUTHORIZED));
+    }
+
+    // Handle Spring Security 403 Forbidden
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<APIResponse<?>> handleAccessDeniedException(AccessDeniedException ex){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(APIResponse.error(ex.getMessage() != null ? ex.getMessage() : "You do not have permission to access this resource",
+                        HttpStatus.FORBIDDEN));
+    }
 
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<APIResponse<Object>> handleMissingParam(
