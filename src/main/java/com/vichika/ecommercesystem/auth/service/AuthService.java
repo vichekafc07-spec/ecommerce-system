@@ -35,8 +35,8 @@ public class AuthService {
         );
         var user = userRepository.findByEmail(request.email())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        var accessToken = jwtService.generateAccessToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        var accessToken = jwtService.generateAccessToken(user).generate();
+        var refreshToken = jwtService.generateRefreshToken(user).generate();
 
         var cookie = new Cookie("refreshToken", refreshToken);
         cookie.setPath("/api/v1/auth/refresh");
@@ -50,15 +50,15 @@ public class AuthService {
 
     public AccessTokenResponse refreshToken(String refreshToken) {
         var jwt = jwtService.parseToken(refreshToken);
-        if (jwt == null || jwtService.isExpiration(refreshToken)){
+        if (jwt == null || jwt.isExpired()){
             throw new TokenExpiredException("Refresh token expired or invalid");
         }
 
-        String username = jwtService.getUsername(refreshToken);
+        String username = jwt.getUsername();
 
         var user = userRepository.findByNameWithRoles(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username " + username));
-        var accessToken = jwtService.generateAccessToken(user);
+        var accessToken = jwtService.generateAccessToken(user).generate();
         return new AccessTokenResponse(accessToken);
     }
 

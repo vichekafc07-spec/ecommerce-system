@@ -17,43 +17,24 @@ import java.util.List;
 public class JwtService {
     private final JwtConfig jwtConfig;
 
-    public String generateAccessToken(AppUser user){
+    public Jwt generateAccessToken(AppUser user){
         return generateToken(user,jwtConfig.getAccessTokenExp());
     }
 
-    public String generateRefreshToken(AppUser user){
+    public Jwt generateRefreshToken(AppUser user){
         return generateToken(user,jwtConfig.getRefreshTokenExp());
     }
 
-    public String parseToken(String token){
+    public Jwt parseToken(String token){
         try {
             var claims = getClaims(token);
-            return Jwts.builder()
-                    .claims(claims)
-                    .signWith(jwtConfig.getKey())
-                    .compact();
+            return new Jwt(claims, jwtConfig.getKey());
         }catch (JwtException e){
             return null;
         }
     }
 
-    public boolean isExpiration(String token){
-        return getClaims(token).getExpiration().before(new Date());
-    }
-
-    public String getUsername(String token){
-        return getClaims(token).getSubject();
-    }
-
-    public List<String> getRole(String token){
-        return getClaims(token).get("role", List.class);
-    }
-
-    public List<String> getPermission(String token){
-        return getClaims(token).get("permission", List.class);
-    }
-
-    private String generateToken(AppUser user, long tokenExpiration) {
+    private Jwt generateToken(AppUser user, long tokenExpiration) {
         List<String> roles = user.getRoles()
                 .stream()
                 .map(Role::getName)
@@ -75,10 +56,7 @@ public class JwtService {
                 .expiration(new Date(System.currentTimeMillis() + 1000 * tokenExpiration))
                 .build();
 
-        return Jwts.builder()
-                .claims(claims)
-                .signWith(jwtConfig.getKey())
-                .compact();
+        return new Jwt(claims,jwtConfig.getKey());
     }
 
     public Claims getClaims(String token){

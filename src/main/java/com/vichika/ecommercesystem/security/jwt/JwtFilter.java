@@ -33,13 +33,13 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         var token = authHeader.replace("Bearer ","");
         var jwt = jwtService.parseToken(token);
-        if (jwt == null || jwtService.isExpiration(token)){
+        if (jwt == null || jwt.isExpired()){
             filterChain.doFilter(request,response);
             return;
         }
 
-        var roles = jwtService.getRole(token);
-        var permissions = jwtService.getPermission(token);
+        var roles = jwt.getRole();
+        var permissions = jwt.getPermission();
 
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
@@ -50,7 +50,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 authorities.add(new SimpleGrantedAuthority(p)));
 
         var authentication = new UsernamePasswordAuthenticationToken(
-                jwtService.getUsername(token),
+                jwt.getUsername(),
                 null,
                 authorities
         );
