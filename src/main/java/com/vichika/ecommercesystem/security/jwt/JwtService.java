@@ -21,6 +21,10 @@ public class JwtService {
         return generateToken(user,jwtConfig.getAccessTokenExp());
     }
 
+    public String generateRefreshToken(AppUser user){
+        return generateToken(user,jwtConfig.getRefreshTokenExp());
+    }
+
     public String parseToken(String token){
         try {
             var claims = getClaims(token);

@@ -4,6 +4,7 @@ import com.vichika.ecommercesystem.auth.dto.request.AuthRequest;
 import com.vichika.ecommercesystem.auth.dto.response.JwtResponse;
 import com.vichika.ecommercesystem.auth.service.AuthService;
 import com.vichika.ecommercesystem.common.APIResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<APIResponse<JwtResponse>> login(@Valid @RequestBody AuthRequest request){
-        return ResponseEntity.ok(APIResponse.ok(authService.loginAuth(request)));
+    public ResponseEntity<APIResponse<JwtResponse>> login(@Valid @RequestBody AuthRequest request , HttpServletResponse response){
+        return ResponseEntity.ok(APIResponse.ok(authService.loginAuth(request,response)));
     }
 
 }
