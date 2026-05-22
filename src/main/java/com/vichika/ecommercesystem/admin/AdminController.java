@@ -74,7 +74,7 @@ public class AdminController {
         return ResponseEntity.ok(APIResponse.ok(adminService.updatePermissions(id,request)));
     }
 
-    @DeleteMapping("/roles/{id}")
+    @DeleteMapping("/permissions/{id}")
     public ResponseEntity<?> deletePermission(@PathVariable Integer id){
         adminService.deletePermissions(id);
         return ResponseEntity.noContent().build();
