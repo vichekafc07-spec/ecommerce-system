@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<AppUser,Long> , JpaSpecifi
 
     @Query("SELECT u FROM AppUser u join fetch u.roles where u.username = :username")
     Optional<AppUser> findByNameWithRoles(String username);
+
+    Optional<AppUser> findByUsername(String username);
 }

@@ -1,9 +1,12 @@
 package com.vichika.ecommercesystem.auth.service;
 
+import com.vichika.ecommercesystem.auth.UserMapper;
 import com.vichika.ecommercesystem.auth.dto.request.AuthRequest;
 import com.vichika.ecommercesystem.auth.dto.response.AccessTokenResponse;
+import com.vichika.ecommercesystem.auth.dto.response.AuthResponse;
 import com.vichika.ecommercesystem.auth.dto.response.JwtResponse;
 import com.vichika.ecommercesystem.auth.repository.UserRepository;
+import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
 import com.vichika.ecommercesystem.exceptions.TokenExpiredException;
 import com.vichika.ecommercesystem.security.jwt.JwtService;
 import jakarta.servlet.http.Cookie;
@@ -11,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +24,7 @@ public class AuthService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UserMapper userMapper;
 
     public JwtResponse loginAuth(AuthRequest request, HttpServletResponse response) {
         authenticationManager.authenticate(
@@ -55,5 +60,13 @@ public class AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with username " + username));
         var accessToken = jwtService.generateAccessToken(user);
         return new AccessTokenResponse(accessToken);
+    }
+
+    public AuthResponse getPrinciples() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        var username = (String) authentication.getPrincipal();
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        return userMapper.authResponse(user);
     }
 }

@@ -2,6 +2,7 @@ package com.vichika.ecommercesystem.auth.controller;
 
 import com.vichika.ecommercesystem.auth.dto.request.AuthRequest;
 import com.vichika.ecommercesystem.auth.dto.response.AccessTokenResponse;
+import com.vichika.ecommercesystem.auth.dto.response.AuthResponse;
 import com.vichika.ecommercesystem.auth.dto.response.JwtResponse;
 import com.vichika.ecommercesystem.auth.service.AuthService;
 import com.vichika.ecommercesystem.common.APIResponse;
@@ -25,6 +26,11 @@ public class AuthController {
     @PostMapping("/refresh")
     public ResponseEntity<APIResponse<AccessTokenResponse>> refresh(@CookieValue("refreshToken") String refreshToken){
         return ResponseEntity.ok(APIResponse.ok(authService.refreshToken(refreshToken)));
+    }
+
+    @GetMapping("/principle")
+    public ResponseEntity<APIResponse<AuthResponse>> principle(){
+        return ResponseEntity.ok(APIResponse.ok(authService.getPrinciples()));
     }
 
 }
