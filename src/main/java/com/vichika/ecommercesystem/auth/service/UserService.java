@@ -6,6 +6,7 @@ import com.vichika.ecommercesystem.auth.dto.request.UserRequest;
 import com.vichika.ecommercesystem.auth.dto.request.UserUpdateRequest;
 import com.vichika.ecommercesystem.auth.dto.response.UserResponse;
 import com.vichika.ecommercesystem.auth.model.AppUser;
+import com.vichika.ecommercesystem.auth.repository.RoleRepository;
 import com.vichika.ecommercesystem.auth.repository.UserRepository;
 import com.vichika.ecommercesystem.common.PageResponse;
 import com.vichika.ecommercesystem.common.SortResponse;
@@ -29,6 +30,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final RoleRepository roleRepository;
 
     public UserResponse createUser(UserRequest request) {
         if (userRepository.existsByEmail(request.email())){
@@ -36,6 +38,9 @@ public class UserService {
         }
         var u = userMapper.toEntity(request);
         u.setPassword(passwordEncoder.encode(request.password()));
+        var userRole = roleRepository.findByName("ROLE_USER")
+                .orElseThrow(() -> new ResourceNotFoundException("ROLE_USER not found"));
+        u.getRoles().add(userRole);
         return userMapper.toResponse(userRepository.save(u));
     }
 
