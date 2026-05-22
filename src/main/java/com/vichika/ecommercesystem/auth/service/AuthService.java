@@ -1,8 +1,10 @@
 package com.vichika.ecommercesystem.auth.service;
 
 import com.vichika.ecommercesystem.auth.dto.request.AuthRequest;
+import com.vichika.ecommercesystem.auth.dto.response.AccessTokenResponse;
 import com.vichika.ecommercesystem.auth.dto.response.JwtResponse;
 import com.vichika.ecommercesystem.auth.repository.UserRepository;
+import com.vichika.ecommercesystem.exceptions.TokenExpiredException;
 import com.vichika.ecommercesystem.security.jwt.JwtService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -38,6 +40,20 @@ public class AuthService {
         cookie.setSecure(true);
         response.addCookie(cookie);
 
-        return new JwtResponse(accessToken);
+        return new JwtResponse(accessToken,refreshToken);
+    }
+
+    public AccessTokenResponse refreshToken(String refreshToken) {
+        var jwt = jwtService.parseToken(refreshToken);
+        if (jwt == null || jwtService.isExpiration(refreshToken)){
+            throw new TokenExpiredException("Refresh token expired or invalid");
+        }
+
+        String username = jwtService.getUsername(refreshToken);
+
+        var user = userRepository.findByNameWithRoles(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username " + username));
+        var accessToken = jwtService.generateAccessToken(user);
+        return new AccessTokenResponse(accessToken);
     }
 }

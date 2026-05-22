@@ -89,11 +89,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingRequestCookieException.class)
     public ResponseEntity<APIResponse<?>> handleMissingCookie() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(APIResponse.error(
-                        "Refresh token missing. Please login again.",
-                        HttpStatus.UNAUTHORIZED
-                ));
+                .body(APIResponse.error("Refresh token missing. Please login again.", HttpStatus.UNAUTHORIZED));
     }
+
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<?> handleTokenExpired(TokenExpiredException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(ex.getMessage());
+    }
+
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<APIResponse<?>> handleException() {
