@@ -3,10 +3,16 @@ package com.vichika.ecommercesystem.audit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.vichika.ecommercesystem.audit.dto.CategoryAuditDto;
+import com.vichika.ecommercesystem.audit.dto.ProductAuditDto;
+import com.vichika.ecommercesystem.audit.dto.UserAuditDto;
 import com.vichika.ecommercesystem.audit.model.AuditLog;
+import com.vichika.ecommercesystem.auth.model.AppUser;
+import com.vichika.ecommercesystem.category.Category;
+import com.vichika.ecommercesystem.product.Product;
 import jakarta.persistence.PostPersist;
-import jakarta.persistence.PostRemove;
 import jakarta.persistence.PostUpdate;
+import jakarta.persistence.PreRemove;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -27,7 +33,7 @@ public class EntityAuditListener {
         saveAudit(entity, "UPDATE", null, entity);
     }
 
-    @PostRemove
+    @PreRemove
     public void onPostRemove(Object entity) {
         saveAudit(entity, "DELETE", entity, null);
     }
@@ -50,12 +56,48 @@ public class EntityAuditListener {
         log.setUsername(getCurrentUser());
 
         if (oldObj != null)
-            log.setOldValues(toJson(oldObj));
+            log.setOldValues(toJson(convertToDto(oldObj)));
 
         if (newObj != null)
-            log.setNewValues(toJson(newObj));
+            log.setNewValues(toJson(convertToDto(newObj)));
 
         repo.save(log);
+    }
+
+    private Object convertToDto(Object entity) {
+
+        if (entity instanceof AppUser user) {
+            return new UserAuditDto(
+                    user.getId(),
+                    user.getUsername(),
+                    user.getEmail()
+            );
+        }
+
+        if (entity instanceof Category category) {
+            return new CategoryAuditDto(
+                    category.getId(),
+                    category.getName(),
+                    category.getCode()
+            );
+        }
+
+        if (entity instanceof Product p) {
+            return new ProductAuditDto(
+                    p.getId(),
+                    p.getName(),
+                    p.getCode(),
+                    p.getDescription(),
+                    p.getQuantity(),
+                    p.getPrice(),
+                    p.getDiscount(),
+                    p.getTotalPrice(),
+                    p.getCategory() != null ? p.getCategory().getName() : null,
+                    p.getCategory() != null ? p.getCategory().getId() : null
+            );
+        }
+
+        return entity;
     }
 
     private String extractName(Object entity) {
