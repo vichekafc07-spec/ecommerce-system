@@ -1,5 +1,7 @@
 package com.vichika.ecommercesystem.product;
 
+import com.vichika.ecommercesystem.audit.EntityAuditListener;
+import com.vichika.ecommercesystem.audit.model.AuditEntity;
 import com.vichika.ecommercesystem.category.Category;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,12 +12,13 @@ import lombok.Setter;
 import java.math.BigDecimal;
 
 @Entity
+@EntityListeners(EntityAuditListener.class)
 @Table(name = "products")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Product {
+public class Product extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
