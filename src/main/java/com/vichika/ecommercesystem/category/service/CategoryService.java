@@ -14,4 +14,6 @@ public interface CategoryService {
     CategoryResponse updateCategory(Byte id, CategoryRequest request);
 
     void deleteCategory(Byte id);
+
+    CategoryResponse restoreCategory(Byte id);
 }

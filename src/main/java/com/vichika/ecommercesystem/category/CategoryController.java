@@ -49,4 +49,9 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<APIResponse<CategoryResponse>> restore(@PathVariable Byte id){
+        return ResponseEntity.ok(APIResponse.ok(categoryService.restoreCategory(id)));
+    }
+
 }

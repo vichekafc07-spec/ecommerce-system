@@ -79,6 +79,15 @@ public class CategoryServiceImpl implements CategoryService{
         categoryRepository.delete(c);
     }
 
+    @Override
+    public CategoryResponse restoreCategory(Byte id) {
+        var cate = categoryRepository.findByIdIncludeDeleted(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + id));
+        cate.setDeleted(false);
+        cate.setDeletedAt(null);
+        return toResponse(categoryRepository.save(cate));
+    }
+
     private CategoryResponse toResponse(Category c){
         return new CategoryResponse(c.getId(), c.getName(), c.getCode());
     }
