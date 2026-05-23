@@ -27,6 +27,7 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public PageResponse<CategoryResponse> getAllCategory(Byte id, String name, String code, String sortBy, String sortAs, Integer page, Integer size) {
         Specification<Category> spec = new SpecificationBuilder<Category>()
+                .equal("deleted", false)
                 .equal("id",id)
                 .like("name",name)
                 .like("code",code)
@@ -41,7 +42,8 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryResponse getCategoryById(Byte id) {
-        var category = getById(id);
+        var category = categoryRepository.findByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + id));
         return toResponse(category);
     }
 
