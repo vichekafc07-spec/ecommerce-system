@@ -50,4 +50,9 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<APIResponse<ProductResponse>> restore(@PathVariable Long id){
+        return ResponseEntity.ok(APIResponse.ok(productService.restoreProduct(id)));
+    }
+
 }

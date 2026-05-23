@@ -31,6 +31,7 @@ public class ProductServiceImpl implements ProductService{
     @Override
     public PageResponse<ProductResponse> getAllProduct(Byte id, String name, String code, Integer categoryId, String sortBy, String sortAs, Integer page, Integer size) {
         Specification<Product> spec = new SpecificationBuilder<Product>()
+                .equal("deleted",false)
                 .equal("id", id)
                 .like("name", name)
                 .like("code", code)
@@ -45,7 +46,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public ProductResponse getProductById(Long id) {
-        return productMapper.toResponse(getById(id));
+        var p = productRepository.findByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
+        return productMapper.toResponse(p);
     }
 
     @Override
@@ -81,8 +84,18 @@ public class ProductServiceImpl implements ProductService{
         productRepository.delete(p);
     }
 
+    @Override
+    public ProductResponse restoreProduct(Long id) {
+        var p = productRepository.findByIdIncludeDeleted(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
+        p.setDeleted(false);
+        p.setDeletedAt(null);
+
+        return productMapper.toResponse(productRepository.save(p));
+    }
+
     private Category getCategoryById(Byte id){
-        return categoryRepository.findById(id)
+        return categoryRepository.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Category not found with id " + id));
     }
 

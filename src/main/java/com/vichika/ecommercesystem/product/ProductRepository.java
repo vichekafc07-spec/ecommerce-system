@@ -14,4 +14,9 @@ public interface ProductRepository extends JpaRepository<Product,Long>, JpaSpeci
 
     @Query("select p from Product p join fetch p.category where p.id = :id")
     Optional<Product> findProductId(@Param("id") Long id);
+
+    @Query("SELECT p FROM Product p where p.id = :id")
+    Optional<Product> findByIdIncludeDeleted(@Param("id") Long id);
+
+    Optional<Product> findByIdAndDeletedFalse(Long id);
 }
