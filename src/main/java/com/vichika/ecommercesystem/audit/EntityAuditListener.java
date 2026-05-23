@@ -17,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 
 public class EntityAuditListener {
@@ -101,6 +102,11 @@ public class EntityAuditListener {
     }
 
     private String extractName(Object entity) {
+
+        if (entity instanceof AppUser user) {
+            return user.getUsername();
+        }
+
         try {
             Field nameField = entity.getClass().getDeclaredField("name");
             nameField.setAccessible(true);
@@ -112,10 +118,11 @@ public class EntityAuditListener {
 
     private Long extractId(Object entity) {
         try {
-            Field id = entity.getClass().getDeclaredField("id");
-            id.setAccessible(true);
-            return (Long) id.get(entity);
+            Method method = entity.getClass().getMethod("getId");
+            Object value = method.invoke(entity);
+            return value != null ? ((Number) value).longValue() : null;
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
