@@ -20,6 +20,7 @@ public class UserController {
     private final UserService authService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('admin:read')")
     public ResponseEntity<APIResponse<PageResponse<UserResponse>>> getAll(@RequestParam(required = false) Long id,
                                                                           @RequestParam(required = false) String username,
                                                                           @RequestParam(required = false) String email,
@@ -32,12 +33,13 @@ public class UserController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('admin:write')")
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<APIResponse<UserResponse>> create(@Valid @RequestBody UserRequest request){
         return ResponseEntity.ok(APIResponse.create(authService.createUser(request)));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('user:write')")
     public ResponseEntity<APIResponse<UserResponse>> update(@PathVariable Long id,
                                                             @Valid @RequestBody UserUpdateRequest request){
         return ResponseEntity.ok(APIResponse.ok(authService.updateUser(id,request)));
@@ -53,6 +55,11 @@ public class UserController {
     public ResponseEntity<?> delete(@PathVariable Long id){
         authService.deleteUser(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/restore/{id}")
+    public ResponseEntity<APIResponse<UserResponse>> restore(@PathVariable Long id){
+        return ResponseEntity.ok(APIResponse.ok(authService.restoreUser(id)));
     }
 
 }

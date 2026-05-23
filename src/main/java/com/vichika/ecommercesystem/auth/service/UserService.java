@@ -46,6 +46,7 @@ public class UserService {
 
     public PageResponse<UserResponse> getAllUser(Long id, String username, String email, String sortBy, String sortAs, Integer page, Integer size) {
         Specification<AppUser> spec = new SpecificationBuilder<AppUser>()
+                .equal("deleted",false)
                 .equal("id",id)
                 .like("username",username)
                 .like("email",email)
@@ -83,6 +84,14 @@ public class UserService {
     public void deleteUser(Long id) {
         var u = getUserById(id);
         userRepository.delete(u);
+    }
+
+    public UserResponse restoreUser(Long id) {
+        var u = userRepository.findByIdIncludeDeleted(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id " + id));
+        u.setDeleted(false);
+        u.setDeletedAt(null);
+        return userMapper.toResponse(userRepository.save(u));
     }
 
     private AppUser getUserById(Long id){

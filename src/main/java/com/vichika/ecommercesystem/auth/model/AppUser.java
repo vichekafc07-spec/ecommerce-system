@@ -1,21 +1,26 @@
 package com.vichika.ecommercesystem.auth.model;
 
+import com.vichika.ecommercesystem.audit.EntityAuditListener;
+import com.vichika.ecommercesystem.audit.model.AuditEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLDelete;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@EntityListeners(EntityAuditListener.class)
 @Table(name = "users")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AppUser {
+@SQLDelete(sql = "UPDATE users SET deleted = true, deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+public class AppUser extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

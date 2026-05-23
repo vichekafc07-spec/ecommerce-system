@@ -4,6 +4,7 @@ import com.vichika.ecommercesystem.auth.model.AppUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
@@ -16,4 +17,9 @@ public interface UserRepository extends JpaRepository<AppUser,Long> , JpaSpecifi
     Optional<AppUser> findByNameWithRoles(String username);
 
     Optional<AppUser> findByUsername(String username);
+
+    Optional<AppUser> findByIdAndDeletedFalse(Long id);
+
+    @Query("SELECT u FROM AppUser u WHERE u.id = :id")
+    Optional<AppUser> findByIdIncludeDeleted(@Param("id") Long id);
 }
