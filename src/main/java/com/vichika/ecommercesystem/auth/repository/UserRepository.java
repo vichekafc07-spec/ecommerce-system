@@ -18,7 +18,7 @@ public interface UserRepository extends JpaRepository<AppUser,Long> , JpaSpecifi
 
     Optional<AppUser> findByUsername(String username);
 
-    Optional<AppUser> findByIdAndDeletedFalse(Long id);
+    Optional<AppUser> findByEmailAndDeletedFalse(String email);
 
     @Query("SELECT u FROM AppUser u WHERE u.id = :id")
     Optional<AppUser> findByIdIncludeDeleted(@Param("id") Long id);

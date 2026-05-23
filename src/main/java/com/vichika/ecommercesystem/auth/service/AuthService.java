@@ -33,7 +33,7 @@ public class AuthService {
                        request.password()
                )
         );
-        var user = userRepository.findByEmail(request.email())
+        var user = userRepository.findByEmailAndDeletedFalse(request.email())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         var accessToken = jwtService.generateAccessToken(user).generate();
         var refreshToken = jwtService.generateRefreshToken(user).generate();

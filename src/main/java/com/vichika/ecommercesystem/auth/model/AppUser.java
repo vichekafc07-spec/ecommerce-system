@@ -1,5 +1,6 @@
 package com.vichika.ecommercesystem.auth.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vichika.ecommercesystem.audit.EntityAuditListener;
 import com.vichika.ecommercesystem.audit.model.AuditEntity;
 import jakarta.persistence.*;
@@ -20,6 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @SQLDelete(sql = "UPDATE users SET deleted = true, deleted_at = CURRENT_TIMESTAMP WHERE id = ?")
+@JsonIgnoreProperties({"roles"})
 public class AppUser extends AuditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
