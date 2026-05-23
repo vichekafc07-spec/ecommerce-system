@@ -23,20 +23,18 @@ public class SpecificationBuilder<T> {
         return this;
     }
 
-    public SpecificationBuilder<T> greaterThanOrEqual(String field, Comparable value) {
+    public void greaterThanOrEqual(String field, Comparable value) {
         if (value != null) {
             spec = spec.and((root, query, cb) ->
                     cb.greaterThanOrEqualTo(root.get(field), value));
         }
-        return this;
     }
 
-    public SpecificationBuilder<T> lessThanOrEqual(String field, Comparable value) {
+    public void lessThanOrEqual(String field, Comparable value) {
         if (value != null) {
             spec = spec.and((root, query, cb) ->
                     cb.lessThanOrEqualTo(root.get(field), value));
         }
-        return this;
     }
 
     public SpecificationBuilder<T> between(String field, Comparable start, Comparable end) {
