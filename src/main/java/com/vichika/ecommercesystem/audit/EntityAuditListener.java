@@ -92,7 +92,7 @@ public class EntityAuditListener {
                     p.getQuantity(),
                     p.getPrice(),
                     p.getDiscount(),
-                    p.getTotalPrice(),
+                    p.getFinalPrice(),
                     p.getCategory() != null ? p.getCategory().getName() : null,
                     p.getCategory() != null ? p.getCategory().getId() : null
             );
