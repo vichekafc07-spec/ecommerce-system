@@ -2,10 +2,7 @@ package com.vichika.ecommercesystem.cart.model;
 
 import com.vichika.ecommercesystem.auth.model.AppUser;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "carts")
@@ -13,6 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Cart {
 
     @Id

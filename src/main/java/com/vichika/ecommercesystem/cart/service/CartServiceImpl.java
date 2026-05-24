@@ -1,0 +1,84 @@
+package com.vichika.ecommercesystem.cart.service;
+
+import com.vichika.ecommercesystem.cart.CartMapper;
+import com.vichika.ecommercesystem.cart.dto.request.AddToCartRequest;
+import com.vichika.ecommercesystem.cart.dto.response.CartItemResponse;
+import com.vichika.ecommercesystem.cart.dto.response.CartResponse;
+import com.vichika.ecommercesystem.cart.model.Cart;
+import com.vichika.ecommercesystem.cart.model.CartItem;
+import com.vichika.ecommercesystem.cart.repository.CartItemRepository;
+import com.vichika.ecommercesystem.cart.repository.CartRepository;
+import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
+import com.vichika.ecommercesystem.product.Product;
+import com.vichika.ecommercesystem.product.ProductRepository;
+import com.vichika.ecommercesystem.util.AuthUtil;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class CartServiceImpl implements CartService{
+    private final CartRepository cartRepository;
+    private final AuthUtil authUtil;
+    private final ProductRepository productRepository;
+    private final CartItemRepository cartItemRepository;
+    private final CartMapper cartMapper;
+
+    @Override
+    public CartResponse addToCart(AddToCartRequest request) {
+
+        var user = authUtil.getCurrentUser();
+        var product = getProductById(request.productId());
+
+        var cart = cartRepository.findByUser(user)
+                .orElseGet(() -> {
+                    var newCart = Cart.builder()
+                            .user(user)
+                            .build();
+                    return cartRepository.save(newCart);
+                });
+
+        var cartItem = cartItemRepository.findByCartAndProduct(cart,product)
+                .orElseGet(() -> {
+                    var item = CartItem.builder()
+                            .cart(cart)
+                            .product(product)
+                            .quantity(0)
+                            .build();
+                    return cartItemRepository.save(item);
+                });
+        cartItem.setQuantity(cartItem.getQuantity() + request.quantity());
+        cartItemRepository.save(cartItem);
+
+        return buildCartResponse(cart);
+    }
+
+    private CartResponse buildCartResponse(Cart cart){
+
+        List<CartItem> items = cartItemRepository.findByCart(cart);
+
+        List<CartItemResponse> itemResponses = items.stream()
+                .map(cartMapper::toCartItemResponse)
+                .toList();
+
+        BigDecimal total = itemResponses.stream()
+                .map(CartItemResponse::finalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        return new CartResponse(
+                cart.getId(),
+                itemResponses,
+                total
+        );
+    }
+
+    private Product getProductById(Long id){
+        return productRepository.findByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
+    }
+
+}
