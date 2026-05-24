@@ -36,7 +36,7 @@ public class Product extends AuditEntity {
     private BigDecimal discount;
 
     @Column(precision = 10 , scale = 2)
-    private BigDecimal totalPrice;
+    private BigDecimal finalPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

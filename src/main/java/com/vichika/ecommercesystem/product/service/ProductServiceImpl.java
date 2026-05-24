@@ -62,7 +62,7 @@ public class ProductServiceImpl implements ProductService{
         var c = getCategoryById(request.categoryId());
         var p = productMapper.toEntity(request);
         p.setCategory(c);
-        p.setTotalPrice(p.totalPrice());
+        p.setFinalPrice(p.totalPrice());
 
         return productMapper.toResponse(productRepository.save(p));
     }
@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService{
         var c = getCategoryById(request.categoryId());
         productMapper.toUpdate(request,p);
         p.setCategory(c);
-        p.setTotalPrice(p.totalPrice());
+        p.setFinalPrice(p.totalPrice());
 
         return productMapper.toResponse(productRepository.save(p));
     }

@@ -11,6 +11,6 @@ public record ProductResponse(
         Integer quantity,
         BigDecimal price,
         BigDecimal discount,
-        BigDecimal totalPrice
+        BigDecimal finalPrice
 ) {
 }
