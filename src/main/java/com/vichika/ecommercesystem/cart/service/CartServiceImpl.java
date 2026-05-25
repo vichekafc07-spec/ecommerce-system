@@ -10,6 +10,7 @@ import com.vichika.ecommercesystem.cart.model.Cart;
 import com.vichika.ecommercesystem.cart.model.CartItem;
 import com.vichika.ecommercesystem.cart.repository.CartItemRepository;
 import com.vichika.ecommercesystem.cart.repository.CartRepository;
+import com.vichika.ecommercesystem.exceptions.BadRequestException;
 import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
 import com.vichika.ecommercesystem.product.Product;
 import com.vichika.ecommercesystem.product.ProductRepository;
@@ -54,7 +55,14 @@ public class CartServiceImpl implements CartService{
                             .build();
                     return cartItemRepository.save(item);
                 });
-        cartItem.setQuantity(cartItem.getQuantity() + request.quantity());
+
+        int requestedQuantity = cartItem.getQuantity() + request.quantity();
+
+        if (requestedQuantity > product.getQuantity()) {
+            throw new BadRequestException("Available stock is only " + product.getQuantity());
+        }
+
+        cartItem.setQuantity(requestedQuantity);
         cartItemRepository.save(cartItem);
 
         return buildCartResponse(cart);
@@ -73,7 +81,10 @@ public class CartServiceImpl implements CartService{
     @Override
     public CartResponse updateQuantity(Long itemId, UpdateCartItemRequest request) {
 
-        var cartItem = getCartItemById(itemId);
+        var user = authUtil.getCurrentUser();
+        var cart = getCartUser(user);
+
+        var cartItem = getCartItemById(itemId,cart);
         cartItem.setQuantity(request.quantity());
         cartItemRepository.save(cartItem);
 
@@ -83,7 +94,10 @@ public class CartServiceImpl implements CartService{
     @Override
     public void removeItem(Long itemId) {
 
-        var cartItem = getCartItemById(itemId);
+        var user = authUtil.getCurrentUser();
+        var cart = getCartUser(user);
+        var cartItem = getCartItemById(itemId,cart);
+
         cartItemRepository.delete(cartItem);
     }
 
@@ -118,8 +132,8 @@ public class CartServiceImpl implements CartService{
                 .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + id));
     }
 
-    private CartItem getCartItemById(Long id){
-        return cartItemRepository.findById(id)
+    private CartItem getCartItemById(Long id, Cart cart){
+        return cartItemRepository.findByIdAndCart(id,cart)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart item not found with id " + id));
     }
 

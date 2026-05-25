@@ -19,7 +19,7 @@ public interface CartMapper {
 
     default BigDecimal calculateSubtotal(CartItem cartItem) {
         return cartItem.getProduct()
-                .getPrice()
+                .getFinalPrice()
                 .multiply(BigDecimal.valueOf(cartItem.getQuantity()));
     }
 }
