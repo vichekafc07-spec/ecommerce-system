@@ -82,6 +82,11 @@ public class CartServiceImpl implements CartService{
         var cart = getCartUser(user);
 
         var cartItem = getCartItemById(itemId,cart);
+
+        if (request.quantity() > cartItem.getProduct().getQuantity()) {
+            throw new BadRequestException("Available stock is only " + cartItem.getProduct().getQuantity());
+        }
+
         cartItem.setQuantity(request.quantity());
         cartItemRepository.save(cartItem);
 
