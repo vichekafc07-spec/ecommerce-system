@@ -20,7 +20,7 @@ public class OrderItem {
     private String productName;
     private BigDecimal productPrice;
     private Integer quantity;
-    private BigDecimal finalPrice;
+    private BigDecimal subTotal;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
