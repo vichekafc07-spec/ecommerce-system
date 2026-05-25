@@ -47,14 +47,11 @@ public class CartServiceImpl implements CartService{
                 });
 
         var cartItem = cartItemRepository.findByCartAndProduct(cart,product)
-                .orElseGet(() -> {
-                    var item = CartItem.builder()
-                            .cart(cart)
-                            .product(product)
-                            .quantity(0)
-                            .build();
-                    return cartItemRepository.save(item);
-                });
+                .orElseGet(() -> CartItem.builder()
+                        .cart(cart)
+                        .product(product)
+                        .quantity(0)
+                        .build());
 
         int requestedQuantity = cartItem.getQuantity() + request.quantity();
 
