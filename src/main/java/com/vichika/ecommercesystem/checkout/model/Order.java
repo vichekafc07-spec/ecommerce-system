@@ -29,4 +29,14 @@ public class Order {
     private AppUser user;
 
     private LocalDateTime createdAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    private String receiverName;
+    private String receiverPhone;
+    private String province;
+    private String city;
+    private String street;
 }

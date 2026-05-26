@@ -5,12 +5,15 @@ import com.vichika.ecommercesystem.cart.model.Cart;
 import com.vichika.ecommercesystem.cart.model.CartItem;
 import com.vichika.ecommercesystem.cart.repository.CartItemRepository;
 import com.vichika.ecommercesystem.cart.repository.CartRepository;
+import com.vichika.ecommercesystem.checkout.dto.request.CheckoutRequest;
 import com.vichika.ecommercesystem.checkout.mapper.OrderMapper;
 import com.vichika.ecommercesystem.checkout.dto.response.OrderItemResponse;
 import com.vichika.ecommercesystem.checkout.dto.response.OrderResponse;
+import com.vichika.ecommercesystem.checkout.model.Address;
 import com.vichika.ecommercesystem.checkout.model.Order;
 import com.vichika.ecommercesystem.checkout.model.OrderItem;
 import com.vichika.ecommercesystem.checkout.model.OrderStatus;
+import com.vichika.ecommercesystem.checkout.repository.AddressRepository;
 import com.vichika.ecommercesystem.checkout.repository.OrderItemRepository;
 import com.vichika.ecommercesystem.checkout.repository.OrderRepository;
 import com.vichika.ecommercesystem.checkout.service.OrderService;
@@ -38,13 +41,14 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final OrderMapper orderMapper;
     private final AuthUtil authUtil;
+    private final AddressRepository addressRepository;
 
     @Override
-    public OrderResponse checkout() {
+    public OrderResponse checkout(CheckoutRequest request) {
 
         var user = authUtil.getCurrentUser();
         var cart = getCartUser(user);
-
+        var address = getAddressOrder(request.addressId(), user);
         List<CartItem> cartItems = cartItemRepository.findByCart(cart);
         if (cartItems.isEmpty()) {
             throw new BadRequestException("Cart is empty");
@@ -58,6 +62,12 @@ public class OrderServiceImpl implements OrderService {
                 .status(OrderStatus.PENDING)
                 .user(user)
                 .createdAt(LocalDateTime.now())
+                .address(address)
+                .receiverName(address.getFullName())
+                .receiverPhone(address.getPhoneNumber())
+                .province(address.getProvince())
+                .city(address.getCity())
+                .street(address.getStreet())
                 .build();
         orderRepository.save(order);
 
@@ -145,6 +155,11 @@ public class OrderServiceImpl implements OrderService {
     private Cart getCartUser(AppUser user){
         return cartRepository.findByUser(user)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
+    }
+
+    private Address getAddressOrder(Long addressId,AppUser user){
+        return addressRepository.findByIdAndUser(addressId,user)
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found with id " + addressId));
     }
 
     private OrderResponse buildOrderResponse(Order order){

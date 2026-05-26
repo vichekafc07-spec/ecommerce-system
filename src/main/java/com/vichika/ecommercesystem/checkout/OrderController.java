@@ -1,8 +1,10 @@
 package com.vichika.ecommercesystem.checkout;
 
+import com.vichika.ecommercesystem.checkout.dto.request.CheckoutRequest;
 import com.vichika.ecommercesystem.checkout.dto.response.OrderResponse;
 import com.vichika.ecommercesystem.checkout.service.OrderService;
 import com.vichika.ecommercesystem.common.APIResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +18,8 @@ public class OrderController {
     private final OrderService orderService;
 
     @PostMapping("/checkout")
-    public ResponseEntity<APIResponse<OrderResponse>> checkout(){
-        return ResponseEntity.ok(APIResponse.create(orderService.checkout()));
+    public ResponseEntity<APIResponse<OrderResponse>> checkout(@Valid @RequestBody CheckoutRequest request){
+        return ResponseEntity.ok(APIResponse.create(orderService.checkout(request)));
     }
 
     @GetMapping("/my-orders")
