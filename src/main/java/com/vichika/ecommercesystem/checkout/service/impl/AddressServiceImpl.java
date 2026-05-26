@@ -7,6 +7,7 @@ import com.vichika.ecommercesystem.checkout.mapper.AddressMapper;
 import com.vichika.ecommercesystem.checkout.model.Address;
 import com.vichika.ecommercesystem.checkout.repository.AddressRepository;
 import com.vichika.ecommercesystem.checkout.service.AddressService;
+import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
 import com.vichika.ecommercesystem.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,31 @@ public class AddressServiceImpl implements AddressService {
                 .isDefault(request.isDefault())
                 .user(user)
                 .build();
+
+        return addressMapper.toAddressResponse(addressRepository.save(address));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AddressResponse> getMyAddresses() {
+        var user = authUtil.getCurrentUser();
+        return addressRepository.findByUser(user)
+                .stream()
+                .map(addressMapper::toAddressResponse)
+                .toList();
+    }
+
+    @Override
+    public AddressResponse updateAddress(Long addressId, AddressRequest request) {
+
+        var user = authUtil.getCurrentUser();
+        var address = addressRepository.findByIdAndUser(addressId,user)
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+
+        if (Boolean.TRUE.equals(request.isDefault())){
+            clearDefaultAddresses(user);
+        }
+        addressMapper.toAddressUpdate(request,address);
 
         return addressMapper.toAddressResponse(addressRepository.save(address));
     }

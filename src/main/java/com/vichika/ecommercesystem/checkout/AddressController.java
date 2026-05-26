@@ -7,10 +7,9 @@ import com.vichika.ecommercesystem.common.APIResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/addresses")
@@ -21,6 +20,17 @@ public class AddressController {
     @PostMapping
     public ResponseEntity<APIResponse<AddressResponse>> create(@Valid @RequestBody AddressRequest request){
         return ResponseEntity.ok(APIResponse.create(addressService.createAddress(request)));
+    }
+
+    @GetMapping
+    public ResponseEntity<APIResponse<List<AddressResponse>>> getMyAddresses(){
+        return ResponseEntity.ok(APIResponse.ok(addressService.getMyAddresses()));
+    }
+
+    @PutMapping("/{addressId}")
+    public ResponseEntity<APIResponse<AddressResponse>> update(@PathVariable Long addressId,
+                                                               @Valid @RequestBody AddressRequest request){
+        return ResponseEntity.ok(APIResponse.ok(addressService.updateAddress(addressId,request)));
     }
 
 }
