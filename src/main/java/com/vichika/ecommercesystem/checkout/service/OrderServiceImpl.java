@@ -88,6 +88,59 @@ public class OrderServiceImpl implements OrderService{
         return buildOrderResponse(order);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderResponse> getMyOrders() {
+        var user = authUtil.getCurrentUser();
+        return orderRepository.findByUserOrderByCreatedAtDesc(user)
+                .stream()
+                .map(this::buildOrderResponse)
+                .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public OrderResponse getOrderById(Long orderId) {
+
+        var user = authUtil.getCurrentUser();
+        var order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found with id " + orderId));
+
+        if (!order.getUser().getId().equals(user.getId())){
+            throw new BadRequestException("You cannot access this order");
+        }
+
+        return buildOrderResponse(order);
+    }
+
+    @Override
+    public OrderResponse cancelOrder(Long orderId) {
+
+        var user = authUtil.getCurrentUser();
+        var order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
+
+        if (!order.getUser().getId().equals(user.getId())){
+            throw new BadRequestException("You cannot access this order");
+        }
+
+        if (order.getStatus() == OrderStatus.CANCELLED){
+            throw new BadRequestException("Order already cancelled");
+        }
+
+        List<OrderItem> orderItems = orderItemRepository.findByOrder(order);
+
+        for (var item : orderItems){
+            var product = item.getProduct();
+            product.setQuantity(product.getQuantity() + item.getQuantity());
+            productRepository.save(product);
+        }
+        order.setStatus(OrderStatus.CANCELLED);
+        orderRepository.save(order);
+
+        return buildOrderResponse(order);
+    }
+
     private Cart getCartUser(AppUser user){
         return cartRepository.findByUser(user)
                 .orElseThrow(() -> new ResourceNotFoundException("Cart not found"));
