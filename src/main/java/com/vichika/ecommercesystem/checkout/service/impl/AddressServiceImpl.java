@@ -58,9 +58,7 @@ public class AddressServiceImpl implements AddressService {
     public AddressResponse updateAddress(Long addressId, AddressRequest request) {
 
         var user = authUtil.getCurrentUser();
-        var address = addressRepository.findByIdAndUser(addressId,user)
-                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
-
+        var address = getAddress(addressId,user);
         if (Boolean.TRUE.equals(request.isDefault())){
             clearDefaultAddresses(user);
         }
@@ -69,9 +67,34 @@ public class AddressServiceImpl implements AddressService {
         return addressMapper.toAddressResponse(addressRepository.save(address));
     }
 
+    @Override
+    public AddressResponse setDefault(Long addressId) {
+
+        var user = authUtil.getCurrentUser();
+        var address = getAddress(addressId,user);
+
+        clearDefaultAddresses(user);
+        address.setIsDefault(true);
+
+        return addressMapper.toAddressResponse(address);
+    }
+
+    @Override
+    public void deleteAddress(Long addressId) {
+        var user = authUtil.getCurrentUser();
+        var address = getAddress(addressId,user);
+        addressRepository.delete(address);
+    }
+
     private void clearDefaultAddresses(AppUser user){
         List<Address> addresses = addressRepository.findByUser(user);
         addresses.forEach(address -> address.setIsDefault(false));
         addressRepository.saveAll(addresses);
+    }
+
+    private Address getAddress(Long addressId, AppUser user){
+        return addressRepository.findByIdAndUser(addressId,user)
+                .orElseThrow(() -> new ResourceNotFoundException("Address not found"));
+
     }
 }

@@ -33,4 +33,15 @@ public class AddressController {
         return ResponseEntity.ok(APIResponse.ok(addressService.updateAddress(addressId,request)));
     }
 
+    @PatchMapping("/default/{addressId}")
+    public ResponseEntity<APIResponse<AddressResponse>> setDefault(@PathVariable Long addressId){
+        return ResponseEntity.ok(APIResponse.ok(addressService.setDefault(addressId)));
+    }
+
+    @DeleteMapping("/{addressId}")
+    public ResponseEntity<?> delete(@PathVariable Long addressId){
+        addressService.deleteAddress(addressId);
+        return ResponseEntity.noContent().build();
+    }
+
 }
