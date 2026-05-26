@@ -1,18 +1,19 @@
-package com.vichika.ecommercesystem.checkout.service;
+package com.vichika.ecommercesystem.checkout.service.impl;
 
 import com.vichika.ecommercesystem.auth.model.AppUser;
 import com.vichika.ecommercesystem.cart.model.Cart;
 import com.vichika.ecommercesystem.cart.model.CartItem;
 import com.vichika.ecommercesystem.cart.repository.CartItemRepository;
 import com.vichika.ecommercesystem.cart.repository.CartRepository;
-import com.vichika.ecommercesystem.checkout.OrderMapper;
-import com.vichika.ecommercesystem.checkout.dto.OrderItemResponse;
-import com.vichika.ecommercesystem.checkout.dto.OrderResponse;
+import com.vichika.ecommercesystem.checkout.mapper.OrderMapper;
+import com.vichika.ecommercesystem.checkout.dto.response.OrderItemResponse;
+import com.vichika.ecommercesystem.checkout.dto.response.OrderResponse;
 import com.vichika.ecommercesystem.checkout.model.Order;
 import com.vichika.ecommercesystem.checkout.model.OrderItem;
 import com.vichika.ecommercesystem.checkout.model.OrderStatus;
 import com.vichika.ecommercesystem.checkout.repository.OrderItemRepository;
 import com.vichika.ecommercesystem.checkout.repository.OrderRepository;
+import com.vichika.ecommercesystem.checkout.service.OrderService;
 import com.vichika.ecommercesystem.exceptions.BadRequestException;
 import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
 import com.vichika.ecommercesystem.product.ProductRepository;
@@ -29,7 +30,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemRepository orderItemRepository;
     private final CartRepository cartRepository;

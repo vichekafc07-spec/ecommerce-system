@@ -1,6 +1,6 @@
 package com.vichika.ecommercesystem.checkout;
 
-import com.vichika.ecommercesystem.checkout.dto.OrderResponse;
+import com.vichika.ecommercesystem.checkout.dto.response.OrderResponse;
 import com.vichika.ecommercesystem.checkout.service.OrderService;
 import com.vichika.ecommercesystem.common.APIResponse;
 import lombok.RequiredArgsConstructor;

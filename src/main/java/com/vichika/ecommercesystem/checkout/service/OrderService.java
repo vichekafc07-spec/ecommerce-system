@@ -1,6 +1,6 @@
 package com.vichika.ecommercesystem.checkout.service;
 
-import com.vichika.ecommercesystem.checkout.dto.OrderResponse;
+import com.vichika.ecommercesystem.checkout.dto.response.OrderResponse;
 import java.util.List;
 
 public interface OrderService {

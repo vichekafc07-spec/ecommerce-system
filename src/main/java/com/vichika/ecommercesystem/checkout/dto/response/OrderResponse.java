@@ -1,4 +1,4 @@
-package com.vichika.ecommercesystem.checkout.dto;
+package com.vichika.ecommercesystem.checkout.dto.response;
 
 import com.vichika.ecommercesystem.checkout.model.OrderStatus;
 import java.math.BigDecimal;
