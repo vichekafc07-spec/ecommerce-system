@@ -7,8 +7,10 @@ import com.vichika.ecommercesystem.product.dto.ProductResponse;
 import com.vichika.ecommercesystem.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/products")
@@ -53,6 +55,11 @@ public class ProductController {
     @PutMapping("/restore/{id}")
     public ResponseEntity<APIResponse<ProductResponse>> restore(@PathVariable Long id){
         return ResponseEntity.ok(APIResponse.ok(productService.restoreProduct(id)));
+    }
+
+    @PutMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<APIResponse<ProductResponse>> uploadImage(@PathVariable Long id, MultipartFile file){
+        return ResponseEntity.ok(APIResponse.ok(productService.uploadImages(id,file)));
     }
 
 }

@@ -28,6 +28,7 @@ public class Product extends AuditEntity {
     private String description;
     private String code;
     private Integer quantity;
+    private String imageUrl;
 
     @Column(precision = 10 , scale = 2)
     private BigDecimal price;

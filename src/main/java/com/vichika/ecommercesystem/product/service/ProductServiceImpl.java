@@ -1,5 +1,7 @@
 package com.vichika.ecommercesystem.product.service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.vichika.ecommercesystem.category.Category;
 import com.vichika.ecommercesystem.category.CategoryRepository;
 import com.vichika.ecommercesystem.common.PageResponse;
@@ -18,8 +20,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +32,8 @@ public class ProductServiceImpl implements ProductService{
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;
+
+    private final Cloudinary cloudinary;
 
     @Override
     public PageResponse<ProductResponse> getAllProduct(Byte id, String name, String code, Integer categoryId, String sortBy, String sortAs, Integer page, Integer size) {
@@ -61,6 +68,7 @@ public class ProductServiceImpl implements ProductService{
         }
         var c = getCategoryById(request.categoryId());
         var p = productMapper.toEntity(request);
+        p.setImageUrl("default.png");
         p.setCategory(c);
         p.setFinalPrice(p.totalPrice());
 
@@ -92,6 +100,26 @@ public class ProductServiceImpl implements ProductService{
         p.setDeletedAt(null);
 
         return productMapper.toResponse(productRepository.save(p));
+    }
+
+    @Override
+    public ProductResponse uploadImages(Long id, MultipartFile file) {
+
+        var product = getById(id);
+
+        try {
+            Map uploadResult = cloudinary.uploader()
+                    .upload(file.getBytes(), ObjectUtils.emptyMap());
+
+            String imageUrl = uploadResult.get("secure_url").toString();
+            product.setImageUrl(imageUrl);
+            productRepository.save(product);
+
+            return productMapper.toResponse(product);
+
+        } catch (IOException e){
+            throw new RuntimeException("Failed to upload image");
+        }
     }
 
     private Category getCategoryById(Byte id){
