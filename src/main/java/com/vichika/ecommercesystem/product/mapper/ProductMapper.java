@@ -1,7 +1,8 @@
-package com.vichika.ecommercesystem.product;
+package com.vichika.ecommercesystem.product.mapper;
 
-import com.vichika.ecommercesystem.product.dto.ProductRequest;
-import com.vichika.ecommercesystem.product.dto.ProductResponse;
+import com.vichika.ecommercesystem.product.dto.request.ProductRequest;
+import com.vichika.ecommercesystem.product.dto.response.ProductResponse;
+import com.vichika.ecommercesystem.product.model.Product;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;

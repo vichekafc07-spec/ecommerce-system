@@ -1,4 +1,4 @@
-package com.vichika.ecommercesystem.product.dto;
+package com.vichika.ecommercesystem.product.dto.request;
 
 import jakarta.validation.constraints.*;
 import java.math.BigDecimal;

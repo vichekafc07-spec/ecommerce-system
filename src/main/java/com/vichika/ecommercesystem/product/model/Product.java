@@ -1,4 +1,4 @@
-package com.vichika.ecommercesystem.product;
+package com.vichika.ecommercesystem.product.model;
 
 import com.vichika.ecommercesystem.audit.EntityAuditListener;
 import com.vichika.ecommercesystem.audit.model.AuditEntity;

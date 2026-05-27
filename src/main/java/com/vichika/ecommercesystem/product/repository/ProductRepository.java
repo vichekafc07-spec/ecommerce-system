@@ -1,5 +1,6 @@
-package com.vichika.ecommercesystem.product;
+package com.vichika.ecommercesystem.product.repository;
 
+import com.vichika.ecommercesystem.product.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

@@ -1,4 +1,4 @@
-package com.vichika.ecommercesystem.product.dto;
+package com.vichika.ecommercesystem.product.dto.response;
 
 import java.math.BigDecimal;
 

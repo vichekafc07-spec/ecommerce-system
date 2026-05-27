@@ -2,8 +2,8 @@ package com.vichika.ecommercesystem.product;
 
 import com.vichika.ecommercesystem.common.APIResponse;
 import com.vichika.ecommercesystem.common.PageResponse;
-import com.vichika.ecommercesystem.product.dto.ProductRequest;
-import com.vichika.ecommercesystem.product.dto.ProductResponse;
+import com.vichika.ecommercesystem.product.dto.request.ProductRequest;
+import com.vichika.ecommercesystem.product.dto.response.ProductResponse;
 import com.vichika.ecommercesystem.product.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
