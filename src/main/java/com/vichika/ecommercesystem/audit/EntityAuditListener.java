@@ -9,7 +9,7 @@ import com.vichika.ecommercesystem.audit.dto.UserAuditDto;
 import com.vichika.ecommercesystem.audit.model.AuditLog;
 import com.vichika.ecommercesystem.auth.model.AppUser;
 import com.vichika.ecommercesystem.category.Category;
-import com.vichika.ecommercesystem.product.Product;
+import com.vichika.ecommercesystem.product.model.Product;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.PostUpdate;
 import jakarta.persistence.PreRemove;
