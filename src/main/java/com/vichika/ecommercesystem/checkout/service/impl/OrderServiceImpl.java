@@ -19,7 +19,7 @@ import com.vichika.ecommercesystem.checkout.repository.OrderRepository;
 import com.vichika.ecommercesystem.checkout.service.OrderService;
 import com.vichika.ecommercesystem.exceptions.BadRequestException;
 import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
-import com.vichika.ecommercesystem.product.ProductRepository;
+import com.vichika.ecommercesystem.product.repository.ProductRepository;
 import com.vichika.ecommercesystem.util.AuthUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
