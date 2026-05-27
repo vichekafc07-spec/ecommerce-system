@@ -2,7 +2,7 @@ package com.vichika.ecommercesystem.cart.repository;
 
 import com.vichika.ecommercesystem.cart.model.Cart;
 import com.vichika.ecommercesystem.cart.model.CartItem;
-import com.vichika.ecommercesystem.product.Product;
+import com.vichika.ecommercesystem.product.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

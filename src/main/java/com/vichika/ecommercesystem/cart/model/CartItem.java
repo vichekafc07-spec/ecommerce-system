@@ -1,6 +1,6 @@
 package com.vichika.ecommercesystem.cart.model;
 
-import com.vichika.ecommercesystem.product.Product;
+import com.vichika.ecommercesystem.product.model.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
