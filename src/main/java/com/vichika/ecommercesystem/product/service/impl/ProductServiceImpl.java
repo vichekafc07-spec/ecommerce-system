@@ -1,4 +1,4 @@
-package com.vichika.ecommercesystem.product.service;
+package com.vichika.ecommercesystem.product.service.impl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
@@ -13,6 +13,7 @@ import com.vichika.ecommercesystem.product.mapper.ProductMapper;
 import com.vichika.ecommercesystem.product.repository.ProductRepository;
 import com.vichika.ecommercesystem.product.dto.request.ProductRequest;
 import com.vichika.ecommercesystem.product.dto.response.ProductResponse;
+import com.vichika.ecommercesystem.product.service.ProductService;
 import com.vichika.ecommercesystem.spec.SpecificationBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService{
+public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ProductMapper productMapper;

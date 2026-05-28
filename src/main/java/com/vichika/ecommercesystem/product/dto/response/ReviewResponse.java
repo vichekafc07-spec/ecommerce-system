@@ -6,6 +6,6 @@ public record ReviewResponse(
         String comment,
         Long userId,
         String userName,
-        Long productName
+        String productName
 ) {
 }
