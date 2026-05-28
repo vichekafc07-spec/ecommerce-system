@@ -1,10 +1,8 @@
 package com.vichika.ecommercesystem.cart.service;
 
 import com.vichika.ecommercesystem.auth.model.AppUser;
-import com.vichika.ecommercesystem.cart.CartMapper;
 import com.vichika.ecommercesystem.cart.dto.request.AddToCartRequest;
 import com.vichika.ecommercesystem.cart.dto.request.UpdateCartItemRequest;
-import com.vichika.ecommercesystem.cart.dto.response.CartItemResponse;
 import com.vichika.ecommercesystem.cart.dto.response.CartResponse;
 import com.vichika.ecommercesystem.cart.model.Cart;
 import com.vichika.ecommercesystem.cart.model.CartItem;
@@ -15,11 +13,11 @@ import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
 import com.vichika.ecommercesystem.product.model.Product;
 import com.vichika.ecommercesystem.product.repository.ProductRepository;
 import com.vichika.ecommercesystem.util.AuthUtil;
+import com.vichika.ecommercesystem.util.CartUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -27,10 +25,10 @@ import java.util.List;
 @Transactional
 public class CartServiceImpl implements CartService{
     private final CartRepository cartRepository;
-    private final AuthUtil authUtil;
     private final ProductRepository productRepository;
     private final CartItemRepository cartItemRepository;
-    private final CartMapper cartMapper;
+    private final AuthUtil authUtil;
+    private final CartUtil cartUtil;
 
     @Override
     public CartResponse addToCart(AddToCartRequest request) {
@@ -62,7 +60,7 @@ public class CartServiceImpl implements CartService{
         cartItem.setQuantity(requestedQuantity);
         cartItemRepository.save(cartItem);
 
-        return buildCartResponse(cart);
+        return cartUtil.buildCartResponse(cart);
     }
 
     @Override
@@ -72,7 +70,7 @@ public class CartServiceImpl implements CartService{
         var user = authUtil.getCurrentUser();
         var cart = getCartUser(user);
 
-        return buildCartResponse(cart);
+        return cartUtil.buildCartResponse(cart);
     }
 
     @Override
@@ -90,7 +88,7 @@ public class CartServiceImpl implements CartService{
         cartItem.setQuantity(request.quantity());
         cartItemRepository.save(cartItem);
 
-        return buildCartResponse(cartItem.getCart());
+        return cartUtil.buildCartResponse(cartItem.getCart());
     }
 
     @Override
@@ -111,22 +109,12 @@ public class CartServiceImpl implements CartService{
         cartItemRepository.deleteAll(items);
     }
 
-    private CartResponse buildCartResponse(Cart cart){
-
-        List<CartItem> items = cartItemRepository.findByCart(cart);
-
-        List<CartItemResponse> itemResponses = items.stream()
-                .map(cartMapper::toCartItemResponse)
-                .toList();
-
-        BigDecimal total = itemResponses.stream()
-                .map(CartItemResponse::finalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        return new CartResponse(
-                cart.getId(),
-                itemResponses,
-                total
-        );
+    @Override
+    public void deleteCart(Long cartId) {
+        var user = authUtil.getCurrentUser();
+        var cart = getCartUser(user);
+        cartItemRepository.deleteByCartId(cartId);
+        cartRepository.delete(cart);
     }
 
     private Product getProductById(Long id){

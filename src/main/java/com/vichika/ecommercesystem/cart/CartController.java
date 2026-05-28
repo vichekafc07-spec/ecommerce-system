@@ -27,6 +27,12 @@ public class CartController {
         return ResponseEntity.ok(APIResponse.ok(cartService.getUserCart()));
     }
 
+    @DeleteMapping("/delete/{cartId}")
+    public ResponseEntity<?> deleteCart(@PathVariable Long cartId){
+        cartService.deleteCart(cartId);
+        return ResponseEntity.noContent().build();
+    }
+
     @PatchMapping("/items/{itemId}")
     public ResponseEntity<APIResponse<CartResponse>> updateQuantity(@PathVariable Long itemId,
                                                                     @Valid @RequestBody UpdateCartItemRequest request){
