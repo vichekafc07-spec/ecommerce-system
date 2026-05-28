@@ -1,5 +1,6 @@
 package com.vichika.ecommercesystem.product;
 
+import com.vichika.ecommercesystem.cart.dto.response.CartResponse;
 import com.vichika.ecommercesystem.common.APIResponse;
 import com.vichika.ecommercesystem.common.PageResponse;
 import com.vichika.ecommercesystem.product.dto.request.WishlistRequest;
@@ -35,5 +36,15 @@ public class WishlistController {
     public ResponseEntity<?> remove(@PathVariable Long productId) {
         wishlistService.removeWishlist(productId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/count")
+    public ResponseEntity<APIResponse<Long>> count() {
+        return ResponseEntity.ok(APIResponse.ok(wishlistService.count()));
+    }
+
+    @PostMapping("/move-to-cart")
+    public ResponseEntity<APIResponse<CartResponse>> moveToCart(@RequestBody WishlistRequest request) {
+        return ResponseEntity.ok(APIResponse.ok(wishlistService.moveToCart(request)));
     }
 }

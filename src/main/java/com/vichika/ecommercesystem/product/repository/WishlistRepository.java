@@ -11,7 +11,7 @@ import java.util.Optional;
 
 public interface WishlistRepository extends JpaRepository<Wishlist, Long> , JpaSpecificationExecutor<Wishlist> {
 
-    List<Wishlist> findByUser(AppUser user);
+    long countByUser(AppUser user);
 
     boolean existsByUserAndProduct(AppUser user, Product product);
 
