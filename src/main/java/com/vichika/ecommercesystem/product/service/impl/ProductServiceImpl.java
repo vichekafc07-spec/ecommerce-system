@@ -37,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
     private final Cloudinary cloudinary;
 
     @Override
-    public PageResponse<ProductResponse> getAllProduct(Byte id, String name, String code, Integer categoryId, String sortBy, String sortAs, Integer page, Integer size) {
+    public PageResponse<ProductResponse> getAllProduct(Long id, String name, String code, Byte categoryId, String sortBy, String sortAs, Integer page, Integer size) {
         Specification<Product> spec = new SpecificationBuilder<Product>()
                 .equal("deleted",false)
                 .equal("id", id)
