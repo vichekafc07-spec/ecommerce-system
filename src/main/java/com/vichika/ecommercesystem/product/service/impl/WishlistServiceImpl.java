@@ -7,6 +7,7 @@ import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
 import com.vichika.ecommercesystem.product.dto.request.WishlistRequest;
 import com.vichika.ecommercesystem.product.dto.response.WishlistResponse;
 import com.vichika.ecommercesystem.product.mapper.WishlistMapper;
+import com.vichika.ecommercesystem.product.model.Product;
 import com.vichika.ecommercesystem.product.model.Wishlist;
 import com.vichika.ecommercesystem.product.repository.ProductRepository;
 import com.vichika.ecommercesystem.product.repository.WishlistRepository;
@@ -35,9 +36,7 @@ public class WishlistServiceImpl implements WishlistService {
     public WishlistResponse createWishlist(WishlistRequest request) {
 
         var user = authUtil.getCurrentUser();
-        var product = productRepository.findById(request.productId())
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + request.productId()));
-
+        var product = getProductById(request.productId());
         if (wishlistRepository.existsByUserAndProduct(user,product)){
             throw new BadRequestException("Wishlist already exists");
         }
@@ -52,8 +51,11 @@ public class WishlistServiceImpl implements WishlistService {
     @Override
     public PageResponse<WishlistResponse> getMyWishlist(Long productId, String sortBy, String sortAs, Integer page, Integer size) {
 
+        var user = authUtil.getCurrentUser();
+
         Specification<Wishlist> spec = new SpecificationBuilder<Wishlist>()
                 .equal("productId" , productId)
+                .equal("user", user)
                 .build();
         List<String> allowSort = List.of("productId");
         var sort = SortResponse.sortResponse(sortBy,sortAs,allowSort);
@@ -67,13 +69,16 @@ public class WishlistServiceImpl implements WishlistService {
     public void removeWishlist(Long productId) {
 
         var user = authUtil.getCurrentUser();
-        var product = productRepository.findById(productId)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
-
+        var product = getProductById(productId);
         var wishlist = wishlistRepository.findByUserAndProduct(user, product)
                 .orElseThrow(() -> new ResourceNotFoundException("Wishlist item not found"));
 
         wishlistRepository.delete(wishlist);
+    }
+
+    private Product getProductById(Long productId){
+        return productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with id " + productId));
     }
 
 }
