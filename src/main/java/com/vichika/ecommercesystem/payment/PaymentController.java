@@ -18,6 +18,13 @@ public class PaymentController {
         return ResponseEntity.ok(APIResponse.ok(paymentService.createCheckoutSession(orderId)));
     }
 
+    @PostMapping("/webhook")
+    public ResponseEntity<?> webhook(@RequestBody String payload,
+                                     @RequestHeader("Stripe-Signature") String signature) {
+        paymentService.handleWebhook(payload, signature);
+        return ResponseEntity.ok("success");
+    }
+
     @GetMapping("/success")
     public String success() {
         return "Payment Success";

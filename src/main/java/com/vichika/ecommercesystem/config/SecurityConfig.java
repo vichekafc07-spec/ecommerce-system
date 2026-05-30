@@ -41,8 +41,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/v1/auth/refresh").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/v1/payments/webhook").permitAll()
                         .requestMatchers("/api/v1/payments/success").permitAll()
                         .requestMatchers("/api/v1/payments/cancel").permitAll()
+                        .requestMatchers("/favicon.ico", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
