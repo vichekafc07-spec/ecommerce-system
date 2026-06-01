@@ -1,6 +1,7 @@
 package com.vichika.ecommercesystem.payment;
 
 import com.vichika.ecommercesystem.common.APIResponse;
+import com.vichika.ecommercesystem.payment.dto.PaymentResponse;
 import com.vichika.ecommercesystem.payment.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

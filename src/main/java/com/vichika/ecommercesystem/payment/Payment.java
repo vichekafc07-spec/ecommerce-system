@@ -1,6 +1,7 @@
 package com.vichika.ecommercesystem.payment;
 
 import com.vichika.ecommercesystem.checkout.model.Order;
+import com.vichika.ecommercesystem.payment.enums.PaymentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
