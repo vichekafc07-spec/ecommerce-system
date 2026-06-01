@@ -9,6 +9,7 @@ import com.vichika.ecommercesystem.auth.model.AppUser;
 import com.vichika.ecommercesystem.checkout.model.Order;
 import com.vichika.ecommercesystem.checkout.model.OrderStatus;
 import com.vichika.ecommercesystem.checkout.repository.OrderRepository;
+import com.vichika.ecommercesystem.email.EmailService;
 import com.vichika.ecommercesystem.exceptions.BadRequestException;
 import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
 import com.vichika.ecommercesystem.payment.Payment;
@@ -33,6 +34,7 @@ public class PaymentServiceImpl implements PaymentService{
     private final OrderRepository orderRepository;
     private final PaymentRepository paymentRepository;
     private final AuthUtil authUtil;
+    private final EmailService emailService;
 
     @Value("${stripe.webhook-secret}")
     private String webhookSecret;
@@ -145,6 +147,8 @@ public class PaymentServiceImpl implements PaymentService{
 
             order.setStatus(OrderStatus.PAID);
             orderRepository.save(order);
+
+            emailService.sendPaymentSuccessEmail(order);
 
         } catch (Exception e) {
             System.err.println("WEBHOOK ERROR");

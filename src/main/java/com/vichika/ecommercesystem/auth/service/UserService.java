@@ -10,6 +10,7 @@ import com.vichika.ecommercesystem.auth.repository.RoleRepository;
 import com.vichika.ecommercesystem.auth.repository.UserRepository;
 import com.vichika.ecommercesystem.common.PageResponse;
 import com.vichika.ecommercesystem.common.SortResponse;
+import com.vichika.ecommercesystem.email.EmailService;
 import com.vichika.ecommercesystem.exceptions.BadRequestException;
 import com.vichika.ecommercesystem.exceptions.DuplicateResourceException;
 import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
@@ -31,6 +32,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
+    private final EmailService emailService;
 
     public UserResponse createUser(UserRequest request) {
         if (userRepository.existsByEmail(request.email())){
@@ -41,7 +43,9 @@ public class UserService {
         var userRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new ResourceNotFoundException("ROLE_USER not found"));
         u.getRoles().add(userRole);
-        return userMapper.toResponse(userRepository.save(u));
+        var saved = userRepository.save(u);
+        emailService.sendWelcomeEmail(saved);
+        return userMapper.toResponse(saved);
     }
 
     public PageResponse<UserResponse> getAllUser(Long id, String username, String email, String sortBy, String sortAs, Integer page, Integer size) {

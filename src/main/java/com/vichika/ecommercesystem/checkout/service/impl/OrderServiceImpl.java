@@ -17,6 +17,7 @@ import com.vichika.ecommercesystem.checkout.repository.AddressRepository;
 import com.vichika.ecommercesystem.checkout.repository.OrderItemRepository;
 import com.vichika.ecommercesystem.checkout.repository.OrderRepository;
 import com.vichika.ecommercesystem.checkout.service.OrderService;
+import com.vichika.ecommercesystem.email.EmailService;
 import com.vichika.ecommercesystem.exceptions.BadRequestException;
 import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
 import com.vichika.ecommercesystem.product.repository.ProductRepository;
@@ -42,6 +43,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderMapper orderMapper;
     private final AuthUtil authUtil;
     private final AddressRepository addressRepository;
+    private final EmailService emailService;
 
     @Override
     public OrderResponse checkout(CheckoutRequest request) {
@@ -70,6 +72,8 @@ public class OrderServiceImpl implements OrderService {
                 .street(address.getStreet())
                 .build();
         orderRepository.save(order);
+
+        emailService.sendOrderPlacedEmail(order);
 
         for (var items : cartItems){
 
