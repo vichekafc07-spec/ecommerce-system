@@ -1,6 +1,6 @@
 package com.vichika.ecommercesystem.checkout.repository;
 
-import com.vichika.ecommercesystem.admin.MonthlySalesProjection;
+import com.vichika.ecommercesystem.admin.projection.MonthlySalesProjection;
 import com.vichika.ecommercesystem.auth.model.AppUser;
 import com.vichika.ecommercesystem.checkout.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;

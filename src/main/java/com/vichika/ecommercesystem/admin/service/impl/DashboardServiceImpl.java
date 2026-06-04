@@ -2,6 +2,7 @@ package com.vichika.ecommercesystem.admin.service.impl;
 
 import com.vichika.ecommercesystem.admin.dto.response.DashboardResponse;
 import com.vichika.ecommercesystem.admin.dto.response.MonthlySalesResponse;
+import com.vichika.ecommercesystem.admin.dto.response.TopProductResponse;
 import com.vichika.ecommercesystem.admin.service.DashboardService;
 import com.vichika.ecommercesystem.category.CategoryRepository;
 import com.vichika.ecommercesystem.checkout.repository.OrderItemRepository;
@@ -54,12 +55,24 @@ public class DashboardServiceImpl implements DashboardService {
 
     @Override
     public List<MonthlySalesResponse> getMonthlySales(Integer year) {
-        return orderRepository
-                .getMonthlySales(year)
+        return orderRepository.getMonthlySales(year)
                 .stream()
                 .map(sale -> new MonthlySalesResponse(
                         Month.of(sale.getMonth()).name(),
                         sale.getRevenue()))
                 .toList();
+    }
+
+    @Override
+    public List<TopProductResponse> getTopSellingProducts(Integer limit) {
+
+        return orderItemRepository.getTopSellingProducts(limit)
+                .stream()
+                .map(product ->
+                        new TopProductResponse(
+                                product.getProductId(),
+                                product.getProductName(),
+                                product.getSoldQuantity())
+                ).toList();
     }
 }

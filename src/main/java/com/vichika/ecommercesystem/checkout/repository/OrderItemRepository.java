@@ -1,5 +1,6 @@
 package com.vichika.ecommercesystem.checkout.repository;
 
+import com.vichika.ecommercesystem.admin.projection.TopProductProjection;
 import com.vichika.ecommercesystem.checkout.model.Order;
 import com.vichika.ecommercesystem.checkout.model.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,4 +28,21 @@ public interface OrderItemRepository extends JpaRepository<OrderItem,Long> {
        WHERE oi.order.status = 'PAID'
        """)
     BigDecimal getTotalExpense();
+
+    @Query(value = """
+        SELECT
+            p.id AS productId,
+            p.name AS productName,
+            SUM(oi.quantity) AS soldQuantity
+        FROM order_items oi
+        JOIN products p
+            ON oi.product_id = p.id
+        JOIN orders o
+            ON oi.order_id = o.id
+        WHERE o.status = 'PAID'
+        GROUP BY p.id, p.name
+        ORDER BY soldQuantity DESC
+        LIMIT :limit
+        """, nativeQuery = true)
+    List<TopProductProjection> getTopSellingProducts(Integer limit);
 }

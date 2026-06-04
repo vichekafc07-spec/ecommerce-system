@@ -1,4 +1,4 @@
-package com.vichika.ecommercesystem.admin;
+package com.vichika.ecommercesystem.admin.projection;
 
 import java.math.BigDecimal;
 
