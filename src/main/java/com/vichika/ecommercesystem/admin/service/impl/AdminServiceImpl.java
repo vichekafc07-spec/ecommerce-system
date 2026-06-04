@@ -1,4 +1,4 @@
-package com.vichika.ecommercesystem.admin.service;
+package com.vichika.ecommercesystem.admin.service.impl;
 
 import com.vichika.ecommercesystem.admin.AdminMapper;
 import com.vichika.ecommercesystem.admin.dto.request.PermissionRequest;
@@ -9,6 +9,7 @@ import com.vichika.ecommercesystem.admin.dto.response.PermissionResponse;
 import com.vichika.ecommercesystem.admin.dto.response.RolePermissionResponse;
 import com.vichika.ecommercesystem.admin.dto.response.RoleResponse;
 import com.vichika.ecommercesystem.admin.dto.response.UserRoleResponse;
+import com.vichika.ecommercesystem.admin.service.AdminService;
 import com.vichika.ecommercesystem.auth.model.Permission;
 import com.vichika.ecommercesystem.auth.model.Role;
 import com.vichika.ecommercesystem.auth.repository.PermissionRepository;

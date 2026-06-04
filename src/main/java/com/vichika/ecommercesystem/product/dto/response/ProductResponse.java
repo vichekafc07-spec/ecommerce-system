@@ -10,6 +10,7 @@ public record ProductResponse(
         String categoryName,
         Integer quantity,
         String imageUrl,
+        BigDecimal costPrice,
         BigDecimal price,
         BigDecimal discount,
         BigDecimal finalPrice

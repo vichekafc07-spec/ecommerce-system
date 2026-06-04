@@ -1,4 +1,4 @@
-package com.vichika.ecommercesystem.admin;
+package com.vichika.ecommercesystem.admin.controller;
 
 import com.vichika.ecommercesystem.admin.dto.request.PermissionRequest;
 import com.vichika.ecommercesystem.admin.dto.request.RolePermissionRequest;

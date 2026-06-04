@@ -24,6 +24,11 @@ public record ProductRequest(
         @Positive(message = "Quantity must be positive")
         Integer quantity,
 
+        @NotNull(message = "Cost Price is required")
+        @DecimalMin(value = "0.0", inclusive = false, message = "Cost Price must be greater than 0")
+        @Digits(integer = 10, fraction = 2, message = "Invalid cost price format")
+        BigDecimal costPrice,
+
         @NotNull(message = "Price is required")
         @DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
         @Digits(integer = 10, fraction = 2, message = "Invalid price format")

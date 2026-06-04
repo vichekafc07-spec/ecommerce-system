@@ -31,6 +31,9 @@ public class Product extends AuditEntity {
     private String imageUrl;
 
     @Column(precision = 10 , scale = 2)
+    private BigDecimal costPrice;
+
+    @Column(precision = 10 , scale = 2)
     private BigDecimal price;
 
     @Column(precision = 10 , scale = 2)
