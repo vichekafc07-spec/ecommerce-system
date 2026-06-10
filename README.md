@@ -158,6 +158,7 @@ Review
 ```http
 POST /api/v1/auth/register
 POST /api/v1/auth/login
+POST /api/v1/auth/login
 ```
 
 ### Category
