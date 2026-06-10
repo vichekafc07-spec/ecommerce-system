@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-category-table
+      author: sorl vichika
+      changes:
+        - createTable:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  type: TINYINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+
+              - column:
+                  name: code
+                  type: VARCHAR(255)
+
+              - column:
+                  name: created_at
+                  type: DATETIME
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: updated_at
+                  type: DATETIME
+                  constraints:
+                    nullable: true
+
+              - column:
+                  name: created_by
+                  type: VARCHAR(255)
+
+              - column:
+                  name: updated_by
+                  type: VARCHAR(255)
+
+              - column:
+                  name: deleted
+                  type: BOOLEAN
+                  defaultValueBoolean: false
+
+              - column:
+                  name: deleted_at
+                  type: DATETIME

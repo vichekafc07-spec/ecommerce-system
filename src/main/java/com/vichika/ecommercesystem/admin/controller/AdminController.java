@@ -14,6 +14,7 @@ import com.vichika.ecommercesystem.common.PageResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,6 +25,7 @@ public class AdminController {
 
     // Role Feature
     @GetMapping("/roles")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<PageResponse<RoleResponse>>> getAll(@RequestParam(required = false) String sortBy,
                                                                           @RequestParam(required = false) String sortAs,
                                                                           @RequestParam(required = false,defaultValue = "1") Integer page,
@@ -32,23 +34,27 @@ public class AdminController {
     }
 
     @PostMapping("/roles")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<RoleResponse>> create(@Valid @RequestBody RoleRequest request){
         return ResponseEntity.ok(APIResponse.create(adminService.createRole(request)));
     }
 
     @PutMapping("/roles/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<RoleResponse>> update(@PathVariable Integer id,
                                                             @Valid @RequestBody RoleRequest request){
         return ResponseEntity.ok(APIResponse.ok(adminService.updateRole(id,request)));
     }
 
     @DeleteMapping("/roles/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<?> delete(@PathVariable Integer id){
         adminService.deleteRole(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/roles/user/{userId}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<UserRoleResponse>> assignUserRole(@PathVariable Long userId,
                                                                         @Valid @RequestBody UserRoleRequest request){
         return ResponseEntity.ok(APIResponse.ok(adminService.assignUserRole(userId,request)));
@@ -56,6 +62,7 @@ public class AdminController {
 
     // Permission Feature
     @GetMapping("/permissions")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<PageResponse<PermissionResponse>>> getAllPermission(@RequestParam(required = false) String sortBy,
                                                                                           @RequestParam(required = false) String sortAs,
                                                                                           @RequestParam(required = false,defaultValue = "1") Integer page,
@@ -64,23 +71,27 @@ public class AdminController {
     }
 
     @PostMapping("/permissions")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<PermissionResponse>> createPermission(@Valid @RequestBody PermissionRequest request){
         return ResponseEntity.ok(APIResponse.create(adminService.createPermissions(request)));
     }
 
     @PutMapping("/permissions/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<PermissionResponse>> updatePermission(@PathVariable Integer id,
                                                                             @Valid @RequestBody PermissionRequest request){
         return ResponseEntity.ok(APIResponse.ok(adminService.updatePermissions(id,request)));
     }
 
     @DeleteMapping("/permissions/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<?> deletePermission(@PathVariable Integer id){
         adminService.deletePermissions(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/permissions/role/{roleId}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<RolePermissionResponse>> assignRolePermission(@PathVariable Integer roleId,
                                                                                     @Valid @RequestBody RolePermissionRequest request){
         return ResponseEntity.ok(APIResponse.ok(adminService.assignRolePermission(roleId,request)));

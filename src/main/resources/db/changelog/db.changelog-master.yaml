@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/001-category-table-seed.yaml
+  - include:
+      file: db/changelog/002-products-table.yaml
+
+
+  # seed data
+  - include:
+      file: db/changelog/seed/1001-category-seed.yaml
+  - include:
+      file: db/changelog/seed/1002-product-seed.yaml

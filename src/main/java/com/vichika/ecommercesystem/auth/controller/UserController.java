@@ -52,12 +52,14 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<?> delete(@PathVariable Long id){
         authService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/restore/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<UserResponse>> restore(@PathVariable Long id){
         return ResponseEntity.ok(APIResponse.ok(authService.restoreUser(id)));
     }

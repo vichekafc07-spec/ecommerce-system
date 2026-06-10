@@ -1,0 +1,94 @@
+databaseChangeLog:
+  - changeSet:
+      id: seed-category-data
+      author: sorl vichika
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: Electronics }
+              - column: { name: code, value: ELEC }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: Fashion }
+              - column: { name: code, value: FASH }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: Books }
+              - column: { name: code, value: BOOK }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: Home }
+              - column: { name: code, value: HOME }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: Beauty }
+              - column: { name: code, value: BEAUTY }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: Sports }
+              - column: { name: code, value: SPORT }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: Toys }
+              - column: { name: code, value: TOY }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: Automotive }
+              - column: { name: code, value: AUTO }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: Grocery }
+              - column: { name: code, value: GROC }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: Health }
+              - column: { name: code, value: HEALTH }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }

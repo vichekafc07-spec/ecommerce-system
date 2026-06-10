@@ -28,28 +28,33 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<CategoryResponse>> getCategoryById(@PathVariable Byte id){
         return ResponseEntity.ok(APIResponse.ok(categoryService.getCategoryById(id)));
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<CategoryResponse>> create(@Valid @RequestBody CategoryRequest categoryRequest){
         return ResponseEntity.ok(APIResponse.create(categoryService.createCategory(categoryRequest)));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<CategoryResponse>> update(@PathVariable Byte id,
                                                                 @Valid @RequestBody CategoryRequest request){
         return ResponseEntity.ok(APIResponse.ok(categoryService.updateCategory(id,request)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<?> delete(@PathVariable Byte id){
         categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/restore/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<CategoryResponse>> restore(@PathVariable Byte id){
         return ResponseEntity.ok(APIResponse.ok(categoryService.restoreCategory(id)));
     }

@@ -1,0 +1,174 @@
+databaseChangeLog:
+  - changeSet:
+      id: seed-products-data
+      author: sorl vichika
+      changes:
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: name, value: iPhone 15 }
+              - column: { name: description, value: Apple smartphone }
+              - column: { name: code, value: PROD001 }
+              - column: { name: quantity, valueNumeric: 50 }
+              - column: { name: image_url, value: iphone15.jpg }
+              - column: { name: cost_price, valueNumeric: 850.00 }
+              - column: { name: price, valueNumeric: 1000.00 }
+              - column: { name: discount, valueNumeric: 20.00 }
+              - column: { name: final_price, valueNumeric: 800.00 }
+              - column: { name: category_id, valueNumeric: 1 }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: name, value: Samsung TV }
+              - column: { name: description, value: 55 inch Smart TV }
+              - column: { name: code, value: PROD002 }
+              - column: { name: quantity, valueNumeric: 20 }
+              - column: { name: image_url, value: samsung-tv.jpg }
+              - column: { name: cost_price, valueNumeric: 400.00 }
+              - column: { name: price, valueNumeric: 600.00 }
+              - column: { name: discount, valueNumeric: 10.00 }
+              - column: { name: final_price, valueNumeric: 540.00 }
+              - column: { name: category_id, valueNumeric: 1 }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: name, value: Nike Shoes }
+              - column: { name: description, value: Running shoes }
+              - column: { name: code, value: PROD003 }
+              - column: { name: quantity, valueNumeric: 100 }
+              - column: { name: image_url, value: nike-shoes.jpg }
+              - column: { name: cost_price, valueNumeric: 40.00 }
+              - column: { name: price, valueNumeric: 80.00 }
+              - column: { name: discount, valueNumeric: 15.00 }
+              - column: { name: final_price, valueNumeric: 68.00 }
+              - column: { name: category_id, valueNumeric: 2 }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: name, value: Java Programming Book }
+              - column: { name: description, value: Learn Java easily }
+              - column: { name: code, value: PROD004 }
+              - column: { name: quantity, valueNumeric: 35 }
+              - column: { name: image_url, value: java-book.jpg }
+              - column: { name: cost_price, valueNumeric: 10.00 }
+              - column: { name: price, valueNumeric: 25.00 }
+              - column: { name: discount, valueNumeric: 20.00 }
+              - column: { name: final_price, valueNumeric: 20.00 }
+              - column: { name: category_id, valueNumeric: 3 }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: name, value: Wooden Chair }
+              - column: { name: description, value: Comfortable chair }
+              - column: { name: code, value: PROD005 }
+              - column: { name: quantity, valueNumeric: 15 }
+              - column: { name: image_url, value: chair.jpg }
+              - column: { name: cost_price, valueNumeric: 25.00 }
+              - column: { name: price, valueNumeric: 50.00 }
+              - column: { name: discount, valueNumeric: 10.00 }
+              - column: { name: final_price, valueNumeric: 45.00 }
+              - column: { name: category_id, valueNumeric: 4 }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: name, value: Lipstick }
+              - column: { name: description, value: Matte red lipstick }
+              - column: { name: code, value: PROD006 }
+              - column: { name: quantity, valueNumeric: 80 }
+              - column: { name: image_url, value: lipstick.jpg }
+              - column: { name: cost_price, valueNumeric: 5.00 }
+              - column: { name: price, valueNumeric: 15.00 }
+              - column: { name: discount, valueNumeric: 5.00 }
+              - column: { name: final_price, valueNumeric: 14.25 }
+              - column: { name: category_id, valueNumeric: 5 }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: name, value: Football }
+              - column: { name: description, value: Professional football }
+              - column: { name: code, value: PROD007 }
+              - column: { name: quantity, valueNumeric: 60 }
+              - column: { name: image_url, value: football.jpg }
+              - column: { name: cost_price, valueNumeric: 8.00 }
+              - column: { name: price, valueNumeric: 20.00 }
+              - column: { name: discount, valueNumeric: 10.00 }
+              - column: { name: final_price, valueNumeric: 18.00 }
+              - column: { name: category_id, valueNumeric: 6 }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: name, value: LEGO Set }
+              - column: { name: description, value: Creative building blocks }
+              - column: { name: code, value: PROD008 }
+              - column: { name: quantity, valueNumeric: 45 }
+              - column: { name: image_url, value: lego.jpg }
+              - column: { name: cost_price, valueNumeric: 20.00 }
+              - column: { name: price, valueNumeric: 40.00 }
+              - column: { name: discount, valueNumeric: 25.00 }
+              - column: { name: final_price, valueNumeric: 30.00 }
+              - column: { name: category_id, valueNumeric: 7 }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: name, value: Car Vacuum }
+              - column: { name: description, value: Portable vacuum cleaner }
+              - column: { name: code, value: PROD009 }
+              - column: { name: quantity, valueNumeric: 25 }
+              - column: { name: image_url, value: vacuum.jpg }
+              - column: { name: cost_price, valueNumeric: 15.00 }
+              - column: { name: price, valueNumeric: 30.00 }
+              - column: { name: discount, valueNumeric: 10.00 }
+              - column: { name: final_price, valueNumeric: 27.00 }
+              - column: { name: category_id, valueNumeric: 8 }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }
+
+        - insert:
+            tableName: products
+            columns:
+              - column: { name: name, value: Vitamin C }
+              - column: { name: description, value: Health supplement }
+              - column: { name: code, value: PROD010 }
+              - column: { name: quantity, valueNumeric: 120 }
+              - column: { name: image_url, value: vitamin-c.jpg }
+              - column: { name: cost_price, valueNumeric: 6.00 }
+              - column: { name: price, valueNumeric: 15.00 }
+              - column: { name: discount, valueNumeric: 20.00 }
+              - column: { name: final_price, valueNumeric: 12.00 }
+              - column: { name: category_id, valueNumeric: 10 }
+              - column: { name: created_by, value: system }
+              - column: { name: updated_by, value: system }
+              - column: { name: deleted, valueBoolean: false }

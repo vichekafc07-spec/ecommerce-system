@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,28 +37,33 @@ public class ProductController {
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<ProductResponse>> create(@Valid @RequestBody ProductRequest request){
         return ResponseEntity.ok(APIResponse.create(productService.createProduct(request)));
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<ProductResponse>> update(@PathVariable Long id,
                                                                @Valid @RequestBody ProductRequest request){
         return ResponseEntity.ok(APIResponse.ok(productService.updateProduct(id,request)));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<?> delete(@PathVariable Long id){
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/restore/{id}")
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<ProductResponse>> restore(@PathVariable Long id){
         return ResponseEntity.ok(APIResponse.ok(productService.restoreProduct(id)));
     }
 
     @PutMapping(value = "/{id}/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAuthority('admin:write')")
     public ResponseEntity<APIResponse<ProductResponse>> uploadImage(@PathVariable Long id, MultipartFile file){
         return ResponseEntity.ok(APIResponse.ok(productService.uploadImages(id,file)));
     }
