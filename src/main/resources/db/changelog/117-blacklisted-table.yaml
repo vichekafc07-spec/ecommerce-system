@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-blacklisted-tokens-table
+      author: sorl-vichika
+      changes:
+        - createTable:
+            tableName: blacklisted_tokens
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: token
+                  type: TEXT
+
+              - column:
+                  name: expires_at
+                  type: TIMESTAMP

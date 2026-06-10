@@ -5,7 +5,10 @@ import com.vichika.ecommercesystem.auth.dto.request.AuthRequest;
 import com.vichika.ecommercesystem.auth.dto.response.AccessTokenResponse;
 import com.vichika.ecommercesystem.auth.dto.response.AuthResponse;
 import com.vichika.ecommercesystem.auth.dto.response.JwtResponse;
+import com.vichika.ecommercesystem.auth.model.BlackListedToken;
+import com.vichika.ecommercesystem.auth.repository.BlackListedTokenRepository;
 import com.vichika.ecommercesystem.auth.repository.UserRepository;
+import com.vichika.ecommercesystem.exceptions.BadRequestException;
 import com.vichika.ecommercesystem.exceptions.ResourceNotFoundException;
 import com.vichika.ecommercesystem.exceptions.TokenExpiredException;
 import com.vichika.ecommercesystem.security.jwt.JwtService;
@@ -25,6 +28,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserMapper userMapper;
+    private final BlackListedTokenRepository blackListedTokenRepository;
 
     public JwtResponse loginAuth(AuthRequest request, HttpServletResponse response) {
         authenticationManager.authenticate(
@@ -68,5 +72,28 @@ public class AuthService {
         var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         return userMapper.authResponse(user);
+    }
+
+    public void logoutAuth(String authHeader, HttpServletResponse response) {
+        if (authHeader == null || !authHeader.startsWith("Bearer ")){
+            throw new BadRequestException("No token provided");
+        }
+
+        String token = authHeader.substring(7);
+        var claims = jwtService.parseToken(token);
+
+        if (claims == null){
+            throw new TokenExpiredException("Invalid token");
+        }
+
+        blackListedTokenRepository.save(
+                new BlackListedToken(null,token,claims.getExpiration()));
+
+        var clear = new Cookie("refreshToken", null);
+        clear.setPath("/api/v1/auth/refresh");
+        clear.setHttpOnly(true);
+        clear.setSecure(true);
+        clear.setMaxAge(0);
+        response.addCookie(clear);
     }
 }

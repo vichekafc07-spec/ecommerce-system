@@ -30,6 +30,12 @@ databaseChangeLog:
       file: db/changelog/113-wishlists-table.yaml
   - include:
       file: db/changelog/114-reviews-table.yaml
+  - include:
+      file: db/changelog/115-payments-table.yaml
+  - include:
+      file: db/changelog/116-audit-logs-tables.yaml
+  - include:
+      file: db/changelog/117-blacklisted-table.yaml
 
 
   # seed data

@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import lombok.RequiredArgsConstructor;
 
 import javax.crypto.SecretKey;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,10 @@ public class Jwt {
 
     public boolean isExpired(){
         return claims.getExpiration().before(new Date());
+    }
+
+    public Instant getExpiration(){
+        return claims.getExpiration().toInstant();
     }
 
     public String getUsername(){

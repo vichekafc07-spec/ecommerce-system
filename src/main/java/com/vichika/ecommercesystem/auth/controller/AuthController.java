@@ -33,4 +33,11 @@ public class AuthController {
         return ResponseEntity.ok(APIResponse.ok(authService.getPrinciples()));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader,
+                                    HttpServletResponse response){
+        authService.logoutAuth(authHeader,response);
+        return ResponseEntity.ok("Logout successfully");
+    }
+
 }

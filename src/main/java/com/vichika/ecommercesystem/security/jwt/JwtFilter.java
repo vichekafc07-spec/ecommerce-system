@@ -1,5 +1,6 @@
 package com.vichika.ecommercesystem.security.jwt;
 
+import com.vichika.ecommercesystem.auth.repository.BlackListedTokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +22,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
+    private final BlackListedTokenRepository blackListedTokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -32,6 +34,14 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
         var token = authHeader.replace("Bearer ","");
+
+        if (blackListedTokenRepository.existsByToken(token)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"Token has been logged out\"}");
+            return;
+        }
+
         var jwt = jwtService.parseToken(token);
         if (jwt == null || jwt.isExpired()){
             filterChain.doFilter(request,response);

@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-audit-logs-table
+      author: sorl-vichika
+      changes:
+        - createTable:
+            tableName: audit_logs
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: entity_name
+                  type: VARCHAR(255)
+
+              - column:
+                  name: entity_id
+                  type: BIGINT
+
+              - column:
+                  name: entity_display_name
+                  type: VARCHAR(255)
+
+              - column:
+                  name: action
+                  type: VARCHAR(100)
+
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+
+              - column:
+                  name: timestamp
+                  type: TIMESTAMP
+
+              - column:
+                  name: old_values
+                  type: TEXT
+
+              - column:
+                  name: new_values
+                  type: TEXT
