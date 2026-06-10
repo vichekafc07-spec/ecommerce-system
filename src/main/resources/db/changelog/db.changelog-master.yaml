@@ -15,10 +15,22 @@ databaseChangeLog:
       file: db/changelog/auth/006-user-roles-table.yaml
   - include:
       file: db/changelog/auth/007-role-permissions-table.yaml
+
   - include:
       file: db/changelog/008-carts-table.yaml
   - include:
       file: db/changelog/009-cart-items-table.yaml
+  - include:
+      file: db/changelog/010-addresses-table.yaml
+  - include:
+      file: db/changelog/111-orders-table.yaml
+  - include:
+      file: db/changelog/112-order-items-table.yaml
+  - include:
+      file: db/changelog/113-wishlists-table.yaml
+  - include:
+      file: db/changelog/114-reviews-table.yaml
+
 
   # seed data
   - include:

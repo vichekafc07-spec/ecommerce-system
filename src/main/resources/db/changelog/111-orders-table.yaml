@@ -1,0 +1,73 @@
+databaseChangeLog:
+  - changeSet:
+        id: create-orders-table
+        author: sorl-vichika
+        changes:
+          - createTable:
+              tableName: orders
+              columns:
+                - column:
+                    name: id
+                    type: BIGINT
+                    autoIncrement: true
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+
+                - column:
+                    name: order_number
+                    type: VARCHAR(255)
+
+                - column:
+                    name: total_amount
+                    type: DECIMAL(19,2)
+
+                - column:
+                    name: status
+                    type: VARCHAR(50)
+
+                - column:
+                    name: user_id
+                    type: BIGINT
+
+                - column:
+                    name: created_at
+                    type: TIMESTAMP
+
+                - column:
+                    name: address_id
+                    type: BIGINT
+
+                - column:
+                    name: receiver_name
+                    type: VARCHAR(255)
+
+                - column:
+                    name: receiver_phone
+                    type: VARCHAR(50)
+
+                - column:
+                    name: province
+                    type: VARCHAR(255)
+
+                - column:
+                    name: city
+                    type: VARCHAR(255)
+
+                - column:
+                    name: street
+                    type: VARCHAR(255)
+
+          - addForeignKeyConstraint:
+              baseTableName: orders
+              baseColumnNames: user_id
+              referencedTableName: users
+              referencedColumnNames: id
+              constraintName: fk_orders_user
+
+          - addForeignKeyConstraint:
+              baseTableName: orders
+              baseColumnNames: address_id
+              referencedTableName: addresses
+              referencedColumnNames: id
+              constraintName: fk_orders_address

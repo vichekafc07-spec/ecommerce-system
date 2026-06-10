@@ -1,0 +1,50 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-reviews-table
+      author: sorl-vichika
+      changes:
+        - createTable:
+            tableName: reviews
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: rating
+                  type: INT
+
+              - column:
+                  name: comment
+                  type: TEXT
+
+              - column:
+                  name: user_id
+                  type: BIGINT
+
+              - column:
+                  name: product_id
+                  type: BIGINT
+
+        - addUniqueConstraint:
+            tableName: reviews
+            columnNames: user_id, product_id
+            constraintName: uq_reviews_user_product
+
+        - addForeignKeyConstraint:
+            baseTableName: reviews
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_reviews_user
+
+        - addForeignKeyConstraint:
+            baseTableName: reviews
+            baseColumnNames: product_id
+            referencedTableName: products
+            referencedColumnNames: id
+            constraintName: fk_reviews_product

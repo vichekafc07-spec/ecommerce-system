@@ -1,0 +1,51 @@
+databaseChangeLog:
+   - changeSet:
+        id: create-addresses-table
+        author: sorl-vichika
+        changes:
+          - createTable:
+              tableName: addresses
+              columns:
+                - column:
+                    name: id
+                    type: BIGINT
+                    autoIncrement: true
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+
+                - column:
+                    name: full_name
+                    type: VARCHAR(255)
+
+                - column:
+                    name: phone_number
+                    type: VARCHAR(50)
+
+                - column:
+                    name: province
+                    type: VARCHAR(255)
+
+                - column:
+                    name: city
+                    type: VARCHAR(255)
+
+                - column:
+                    name: street
+                    type: VARCHAR(255)
+
+                - column:
+                    name: is_default
+                    type: BOOLEAN
+                    defaultValueBoolean: false
+
+                - column:
+                    name: user_id
+                    type: BIGINT
+
+          - addForeignKeyConstraint:
+              baseTableName: addresses
+              baseColumnNames: user_id
+              referencedTableName: users
+              referencedColumnNames: id
+              constraintName: fk_addresses_user
