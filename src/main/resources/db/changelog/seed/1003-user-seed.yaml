@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1003-users-seed
+      author: sorl vichika
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: admin
+              - column:
+                  name: email
+                  value: admin@gmail.com
+              - column:
+                  name: password
+                  value: $2a$10$turzt45ANhbj7gge06GSpOrnKy8ReGbwdd1b3V5LjFaeacVmOgSlG
+
+              - column:
+                  name: deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: user
+              - column:
+                  name: email
+                  value: user@gmail.com
+              - column:
+                  name: password
+                  value: $2a$10$turzt45ANhbj7gge06GSpOrnKy8ReGbwdd1b3V5LjFaeacVmOgSlG
+
+              - column:
+                  name: deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: cashier
+              - column:
+                  name: email
+                  value: cashier@gmail.com
+              - column:
+                  name: password
+                  value: $2a$10$turzt45ANhbj7gge06GSpOrnKy8ReGbwdd1b3V5LjFaeacVmOgSlG
+
+              - column:
+                  name: deleted
+                  valueBoolean: false

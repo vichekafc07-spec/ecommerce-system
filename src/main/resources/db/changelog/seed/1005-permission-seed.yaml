@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1005-permission-seed
+      author: sorl vichika
+      changes:
+        - insert:
+            tableName: permissions
+            columns:
+              - column:
+                  name: name
+                  value: admin:write
+
+        - insert:
+            tableName: permissions
+            columns:
+              - column:
+                  name: name
+                  value: admin:read
+
+        - insert:
+            tableName: permissions
+            columns:
+              - column:
+                  name: name
+                  value: user:write
+
+        - insert:
+            tableName: permissions
+            columns:
+              - column:
+                  name: name
+                  value: user:read
+
+        - insert:
+            tableName: permissions
+            columns:
+              - column:
+                  name: name
+                  value: cashier:write
+
+        - insert:
+            tableName: permissions
+            columns:
+              - column:
+                  name: name
+                  value: cashier:read

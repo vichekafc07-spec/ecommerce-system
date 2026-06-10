@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1007-role-permission-seed
+      author: sorl vichika
+      changes:
+        - insert:
+            tableName: role_permissions
+            columns:
+              - column:
+                  name: role_id
+                  valueNumeric: 1
+              - column:
+                  name: permission_id
+                  valueNumeric: 1
+
+        - insert:
+            tableName: role_permissions
+            columns:
+              - column:
+                  name: role_id
+                  valueNumeric: 1
+              - column:
+                  name: permission_id
+                  valueNumeric: 2
+
+        - insert:
+            tableName: role_permissions
+            columns:
+              - column:
+                  name: role_id
+                  valueNumeric: 2
+              - column:
+                  name: permission_id
+                  valueNumeric: 3
+
+        - insert:
+            tableName: role_permissions
+            columns:
+              - column:
+                  name: role_id
+                  valueNumeric: 2
+              - column:
+                  name: permission_id
+                  valueNumeric: 4
+
+        - insert:
+            tableName: role_permissions
+            columns:
+              - column:
+                  name: role_id
+                  valueNumeric: 3
+              - column:
+                  name: permission_id
+                  valueNumeric: 5
+
+        - insert:
+            tableName: role_permissions
+            columns:
+              - column:
+                  name: role_id
+                  valueNumeric: 3
+              - column:
+                  name: permission_id
+                  valueNumeric: 6

@@ -4,9 +4,35 @@ databaseChangeLog:
   - include:
       file: db/changelog/002-products-table.yaml
 
+  # auth
+  - include:
+      file: db/changelog/auth/003-users-table.yaml
+  - include:
+      file: db/changelog/auth/004-roles-table.yaml
+  - include:
+      file: db/changelog/auth/005-permissions.yaml
+  - include:
+      file: db/changelog/auth/006-user-roles-table.yaml
+  - include:
+      file: db/changelog/auth/007-role-permissions-table.yaml
+  - include:
+      file: db/changelog/008-carts-table.yaml
+  - include:
+      file: db/changelog/009-cart-items-table.yaml
 
   # seed data
   - include:
       file: db/changelog/seed/1001-category-seed.yaml
   - include:
       file: db/changelog/seed/1002-product-seed.yaml
+
+  - include:
+      file: db/changelog/seed/1003-user-seed.yaml
+  - include:
+      file: db/changelog/seed/1004-role-seed.yaml
+  - include:
+      file: db/changelog/seed/1005-permission-seed.yaml
+  - include:
+      file: db/changelog/seed/1006-user-role-seed.yaml
+  - include:
+      file: db/changelog/seed/1007-role-permission-seed.yaml

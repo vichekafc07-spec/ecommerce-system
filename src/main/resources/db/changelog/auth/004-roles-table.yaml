@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-roles-table
+      author: sorl-vichika
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: INT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+
+        - addUniqueConstraint:
+            tableName: roles
+            columnNames: name
+            constraintName: uk_roles_name
